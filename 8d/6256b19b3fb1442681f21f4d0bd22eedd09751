@@ -1,0 +1,21 @@
+epics/version-control-and-agents-primer/explorations/01-version-control-and-agents-primer.html
+  s_5ea39878867512::t_2cbd948b1b8ded 143-178,195,203-204,209,213-217,220-223,227-228,232-233,236-312,318-323,325-331,337-480,499,513-514,529,544,559,574,589,603-604,612-614,616-620,626
+index.html
+  s_5ea39878867512::t_1f984884dad4f2 163-164,168,185,188
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "8d6256b19b3fb1442681f21f4d0bd22eedd09751",
+  "prompts": {},
+  "sessions": {
+    "s_5ea39878867512": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1e0df0b-baf5-4ffb-aa9c-29985fb50ad1",
+        "model": "unknown"
+      },
+      "human_author": "Sam Childs <schilds@g2.com>"
+    }
+  }
+}
