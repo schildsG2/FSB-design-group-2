@@ -1,0 +1,3 @@
+[submodule "shared/elevate-prototyping-kit"]
+	path = shared/elevate-prototyping-kit
+	url = https://github.com/schildsG2/elevate-prototyping-kit.git
