@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Version Control &amp; Agents Primer</title>
+
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/tokens/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/components/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/utilities.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/icons/icons.css">
+
+  <style>
+    body { margin: 0; background: var(--bg-neutral-5); }
+    html { scroll-behavior: smooth; }
+
+    code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    pre.codeblock {
+      background: #17151d;
+      color: #e7e4f0;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    pre.codeblock .c { color: #8b8698; }
+
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-neutral-10, #f2f2f3);
+      color: var(--text-default);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1 1 140px;
+      background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      min-width: 140px;
+    }
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-nonessential, #6f6d78);
+      font-size: 20px;
+      flex: 0 0 auto;
+      padding: 0 2px;
+    }
+    @media (max-width: 720px) {
+      .flow-row { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    }
+
+    .step-row {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .step-row:last-child { border-bottom: none; }
+    .step-num {
+      flex: 0 0 32px;
+      height: 32px;
+      width: 32px;
+      border-radius: var(--radius-full);
+      background: #f2f0f9;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    table.fileref { width: 100%; border-collapse: collapse; }
+    table.fileref th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      background: #fafafa;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    table.fileref td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      color: var(--text-default);
+      vertical-align: top;
+    }
+    table.fileref tr:last-child td { border-bottom: none; }
+
+    .elv-accordion__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      text-align: left;
+    }
+    .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .elv-accordion__item:last-child { border-bottom: none; }
+    .elv-accordion__content[aria-hidden="true"] { display: none; }
+    .elv-accordion__content[aria-hidden="false"] { display: block; }
+    .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
+    .elv-accordion__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 150ms ease;
+    }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    /* Tout banner — compact inline callout with icon + text + CTA */
+    .tout-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ebe9f6;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+    }
+    .tout-banner__icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #ffffff;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tout-banner__text {
+      flex: 1 1 auto;
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #342a6a;
+      min-width: 200px;
+    }
+    .tout-banner__cta {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      .tout-banner { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div elv class="elv-bg-neutral-5 elv-min-h-screen">
+
+  <!-- Header -->
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list" style="display:inline-flex; align-items:center; gap:2px;">
+          <li style="display:flex; align-items:center; gap:2px;">
+            <a href="../../../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">FSB Design Group 2</a>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
+          </li>
+          <li>
+            <span style="color:#84838a; font-size:12px;" aria-current="page">Version Control &amp; Agents Primer</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
+        Version Control &amp; Agents Primer
+      </h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">
+        Git fundamentals, PR mechanics, and working with an agent on a repo — for early-level builders on
+        design/dev crossover projects like this one.
+      </p>
+    </div>
+  </header>
+
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3" style="display:flex; flex-direction:column; gap:96px;">
+
+    <!-- SECTION 1: THE CORE LOOP -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">The core loop</h2>
+      <p class="elv-text-sm elv-text-subtle elv-max-w-2xl" style="margin-bottom:32px;">
+        Version control just tracks changes to files as small, labeled snapshots you can always return to.
+        You branch off main to work safely, and the loop isn't done until your change is reviewed, approved,
+        and merged back.
+      </p>
+
+      <div class="flow-row" style="margin-bottom:32px;">
+        <div class="flow-step" style="background:#f2f0f9; border-color:#ddd7f3;">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">1. Work locally</div>
+          <div class="elv-text-sm elv-text-subtle">Branch off <span class="term-chip">main</span>, then edit and commit as you go. Nothing here is visible to anyone but you.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">2. Share it</div>
+          <div class="elv-text-sm elv-text-subtle">Push your branch and open a PR — a request for your changes to be merged into main.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">3. Get it reviewed</div>
+          <div class="elv-text-sm elv-text-subtle">A teammate (or agent) reads the diff, comments, and signs off once it looks right.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#f2f0f9; border-color:#ddd7f3;">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">4. Merged into main</div>
+          <div class="elv-text-sm elv-text-subtle">Your change joins <span class="term-chip">main</span> for good — the loop closes, and everyone builds on top of it next.</div>
+        </div>
+      </div>
+
+      <div class="tout-banner" style="margin-top:40px;">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          <strong>Main only changes at the two tinted ends</strong> — branched off at the start, merged into at
+          the end. Everything between happens safely on your own branch. Shipping a change, below, walks
+          through that stretch step by step.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 3: SHIPPING A CHANGE -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Shipping a change</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        The full walkthrough, branch to merge — including the commands behind each step and this org's
+        own conventions for branch names and PR titles.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 8px 24px 8px;">
+
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Branch off main</div>
+              <div class="elv-text-sm elv-text-subtle"><span class="term-chip">git switch -c</span> creates a parallel line of history — a safe place to experiment without touching <span class="term-chip">main</span>. Give it a descriptive name.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Commit as you go</div>
+              <div class="elv-text-sm elv-text-subtle"><span class="term-chip">git add</span> stages a change, <span class="term-chip">git commit</span> saves it as a permanent, labeled snapshot. Small, logical commits are worth more than one giant one at the end — they make review and rollback much easier.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Push and open the PR</div>
+              <div class="elv-text-sm elv-text-subtle"><span class="term-chip">git push</span> sends your commits to GitHub, then you open a PR: a request for your branch to be merged into main. Write a description — what changed, why, and how to verify it — this is the first thing a reviewer (human or agent) reads.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">4</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">CI checks run automatically</div>
+              <div class="elv-text-sm elv-text-subtle">Tests, linters, type checks. A red check means something needs fixing before anyone should review the logic.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">5</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Review &amp; comments</div>
+              <div class="elv-text-sm elv-text-subtle">Reviewers comment inline on the diff. You push new commits in response — the PR updates in place, it doesn't restart.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">6</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Approve &amp; merge</div>
+              <div class="elv-text-sm elv-text-subtle">Once approved and checks are green, the branch merges into main (usually squashed into one clean commit) and the branch is deleted.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="elv-content-card elv-content-card--bordered elv-mt-4" style="max-width: none;">
+        <div class="elv-content-card__body" style="padding: 16px 20px;">
+          <p class="elv-text-xs elv-font-bold elv-text-nonessential elv-mb-2" style="letter-spacing:0.04em; text-transform:uppercase;">G2 Engineering conventions</p>
+          <p class="elv-text-sm elv-text-default" style="margin:0 0 10px;">
+            <strong>Branch naming (step 1):</strong> <span class="term-chip">&lt;github-username&gt;/&lt;feature-name-or-jira-id&gt;</span> —
+            e.g. <span class="term-chip">schilds/DGTL-84</span>. Merges go to <span class="term-chip">main</span> via rebase
+            merging (no merge commits, clean linear history), and the branch is deleted automatically once merged.
+          </p>
+          <p class="elv-text-sm elv-text-default" style="margin:0;">
+            <strong>PR title format (step 3):</strong> follows <a href="https://www.conventionalcommits.org/en/v1.0.0/#summary" target="_blank" rel="noopener" style="color:#5746b2;">conventional commits</a> —
+            <span class="term-chip">&lt;type&gt;: &lt;description&gt; [&lt;jira-ticket&gt;]</span>. A valid Jira ticket is required
+            somewhere in the title or description, or the title should say <span class="term-chip">[NO JIRA]</span>. A bot
+            blocks the PR with a comment if the title doesn't conform. Example: <em>feat: Add relative padding to clipboard [DGTL-84]</em>.
+          </p>
+          <p class="elv-text-xs elv-text-nonessential elv-mt-2" style="margin:0;">
+            Source: G2 Engineering Confluence, "Branching Strategy" — worth a read in full if you're touching a real G2 repo for the first time.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3.5: STAYING CLOSE TO A PR WITH AN AGENT -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Staying close to a PR with an agent</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        An engineer reviews the code — that doesn't change. But once your PR is open, you can ask an agent
+        to keep watch on it for you: whether checks are passing, whether a comment is waiting on a reply,
+        and whether the merge actually deployed.
+      </p>
+
+      <div class="elv-grid elv-grid-cols-1 elv-gap-4" style="grid-template-columns: 1fr; display:grid;">
+        <style>
+          @media (min-width: 750px) {
+            .review-grid { grid-template-columns: 1fr 1fr !important; }
+          }
+        </style>
+        <div class="review-grid" style="display:grid; grid-template-columns:1fr; gap:16px;">
+          <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+            <div class="elv-content-card__header">
+              <div class="elv-content-card__header-content">
+                <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:8px 0 3px;">While it's open</h3>
+                <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); text-transform:uppercase; letter-spacing:0.03em; margin:0;">Keep tabs without pinging anyone</p>
+              </div>
+            </div>
+            <div class="elv-content-card__body">
+              <ul style="margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:10px;">
+                <li><pre class="codeblock">"Is CI green on PR #142 yet? If not, what failed?"</pre></li>
+                <li><pre class="codeblock">"Summarize the reviewer comments on my PR in plain language"</pre></li>
+                <li><pre class="codeblock">"Is there a comment on my PR still waiting on a reply from me?"</pre></li>
+              </ul>
+            </div>
+          </div>
+          <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+            <div class="elv-content-card__header">
+              <div class="elv-content-card__header-content">
+                <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:8px 0 3px;">Once it's approved</h3>
+                <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); text-transform:uppercase; letter-spacing:0.03em; margin:0;">Confirm it actually shipped</p>
+              </div>
+            </div>
+            <div class="elv-content-card__body">
+              <ul style="margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:10px;">
+                <li><pre class="codeblock">"Did PR #142 merge cleanly into main?"</pre></li>
+                <li><pre class="codeblock">"Did the deploy pipeline succeed? Where can I see it?"</pre></li>
+                <li><pre class="codeblock">"Was the branch cleaned up after merging?"</pre></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: AGENTS ON A REPO -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Using an agent to look at a repo</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        You know what should happen — <strong>you direct, the agent executes.</strong> It can read a codebase
+        the way you'd skim it, just faster, and hold more of it in mind at once. A few prompts that work well:
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body">
+          <ul style="margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:14px;">
+            <li>
+              <pre class="codeblock">"Explore this repo and give me a high-level summary of what it does"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Where is the login button styled? I want to change its color"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Summarize what changed in the last 5 commits"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Look at PR #142 and tell me what the reviewer is asking for"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Find every place this component is used before I rename it"</pre>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tout-banner" style="margin-top:40px;">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          <span class="term-chip" style="background:#ffffff;">/init</span> is worth knowing on its own: it's a built-in skill that scans a
+          repo and writes a starter <span class="term-chip" style="background:#ffffff;">CLAUDE.md</span> for it. Landing in a codebase that
+          doesn't have one yet (see the next section) is exactly when to reach for it.
+        </p>
+      </div>
+
+      <p class="elv-text-sm elv-text-subtle elv-mt-4 elv-max-w-2xl">
+        Specificity is what makes any of this work — "fix my code" gives an agent nothing to anchor on;
+        "the submit button doesn't disable while saving" gives it something to find.
+      </p>
+    </section>
+
+    <!-- SECTION 5: HIDDEN FILES -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">The hidden files that support agents &amp; skills</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        A repo isn't just the visible code — dotfiles and config quietly shape how tools and agents behave in it.
+        This repository is itself a working example:
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 0;">
+          <table class="fileref">
+            <tr>
+              <th style="width:22%;">File / folder</th>
+              <th>What it does</th>
+            </tr>
+            <tr>
+              <td><span class="term-chip">.git/</span></td>
+              <td>The actual database of every commit, branch, and history — this is what makes it a repo at all. Never edit by hand.</td>
+            </tr>
+            <tr>
+              <td><span class="term-chip">.gitignore</span></td>
+              <td>Lists files/folders git should never track (build artifacts, local secrets, <span class="term-chip">node_modules</span>, etc).</td>
+            </tr>
+            <tr>
+              <td><span class="term-chip">CLAUDE.md</span></td>
+              <td>Auto-loaded project context for an agent — in this repo, it's the file describing the Elevate design system, folder structure, and conventions you're reading right now, in effect.</td>
+            </tr>
+            <tr>
+              <td><span class="term-chip">.claude/*.skill</span></td>
+              <td>Packaged, repeatable workflows an agent can run on command — this repo has <span class="term-chip">new-epic</span>, <span class="term-chip">new-exploration</span>, and <span class="term-chip">setup-squad-explorations</span>, which is exactly how this exploration's folder and gallery card got scaffolded.</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="elv-content-card elv-content-card--bordered elv-mt-4" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 16px 20px;">
+          <p class="elv-text-sm elv-text-default" style="margin:0;">
+            The pattern generalizes: any codebase you get pulled into may have its own <span class="term-chip">CLAUDE.md</span>
+            or equivalent — checking for one before asking an agent to make changes is usually the fastest way to
+            get output that matches the team's actual conventions instead of generic defaults.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: TERMS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Terms worth knowing</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        You don't need to memorize these — but recognizing them will make PR descriptions, agent output, and
+        teammates' Slack messages far less mysterious.
+      </p>
+
+      <div class="elv-accordion" data-accordion>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="true" aria-controls="t-clone">
+            <span><span class="term-chip">clone</span> &nbsp; Copying a remote repo to your machine</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-clone" aria-hidden="false" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                <span class="term-chip">git clone &lt;url&gt;</span> downloads the full history of a repo and sets it up locally, with a link back to the remote (called <span class="term-chip">origin</span>).
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like duplicating a shared Figma file into your own drafts — except every past version comes with it.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-branch">
+            <span><span class="term-chip">branch</span> &nbsp; An isolated line of work</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-branch" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Lets you make commits without affecting <span class="term-chip">main</span>. One branch per feature or fix — this org names them <span class="term-chip">schilds/DGTL-84</span>-style, covered in Shipping a change above.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like a parallel artboard or page — you can rearrange and experiment without touching the shipped version.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-checkout">
+            <span><span class="term-chip">checkout / switch</span> &nbsp; Moving between branches</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-checkout" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                <span class="term-chip">git switch -c my-branch</span> creates and moves you onto a new branch. Your working directory changes to reflect that branch's state.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like switching between pages in a Figma file — the canvas changes to show that page's content.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-diff">
+            <span><span class="term-chip">diff</span> &nbsp; What actually changed</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-diff" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A line-by-line comparison between two states of the code. Lines added show as <span style="color:#0f5249;">+green</span>, removed as <span style="color:#b21800;">-red</span>. This is what a PR review is actually reading.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like redlines on a spec — exactly what moved, what got added, what got deleted.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-merge">
+            <span><span class="term-chip">merge vs rebase</span> &nbsp; Two ways to combine history</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-merge" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                <strong>Merge</strong> combines two branches and keeps both histories intact (creates a merge commit). <strong>Rebase</strong> replays your commits on top of the latest main, producing a cleaner, linear history. Most PRs are merged via a "squash merge" — all your commits collapse into one.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like flattening a layered comp into one final export — the intermediate steps collapse, only the result ships.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-remote">
+            <span><span class="term-chip">remote / origin</span> &nbsp; The shared copy on GitHub</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-remote" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Your local repo is a full copy — <span class="term-chip">origin</span> is just the conventional name for where it came from / syncs back to. <span class="term-chip">git pull</span> brings origin's changes to you; <span class="term-chip">git push</span> sends yours there.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like the shared team library vs. your local copy of it — you publish changes up, and pull others' updates down.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-head">
+            <span><span class="term-chip">HEAD</span> &nbsp; "Where you are right now"</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-head" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A pointer to whatever commit your working directory currently reflects. Almost always "the tip of the branch you're on" — but this is also what agents mean when they say "at HEAD."
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like "you are here" on the canvas — which version you're currently looking at and editing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-pr">
+            <span><span class="term-chip">PR / MR</span> &nbsp; Pull request / merge request</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-pr" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A request to merge your branch into main, opened on GitHub — bundles your commits, a diff, a description, and a place for teammates (or agents) to comment. Covered in detail above.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like sharing a Figma file for a design crit — here's what changed, here's why, please comment before it ships.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tout-banner elv-mt-4">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          Reading about branching only gets you so far — <strong>Learn Git Branching</strong> is a free, browser-based
+          sandbox that visualizes commits and branches as you type real git commands. No install required.
+        </p>
+        <a href="https://learngitbranching.js.org/" target="_blank" rel="noopener" class="btn btn--secondary btn--sm tout-banner__cta">Try it →</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="elv-mt-4 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+      <a href="../../../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
+    </footer>
+
+  </div>
+
+</div>
+
+<!-- Accordion behavior -->
+<script>
+(function() {
+  const accordions = document.querySelectorAll('[data-accordion]');
+  accordions.forEach(accordion => {
+    const headers = accordion.querySelectorAll('.elv-accordion__header');
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        const contentId = header.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
