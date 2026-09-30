@@ -251,6 +251,53 @@
       </div>
     </section>
 
+    <!-- SECTION 4: AGENTS ON A REPO -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Using an agent to look at a repo</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        You know what should happen — <strong>you direct, the agent executes.</strong> It can read a codebase
+        the way you'd skim it, just faster, and hold more of it in mind at once. A few prompts that work well:
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body">
+          <ul style="margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:14px;">
+            <li>
+              <pre class="codeblock">"Explore this repo and give me a high-level summary of what it does"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Where is the login button styled? I want to change its color"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Summarize what changed in the last 5 commits"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Look at PR #142 and tell me what the reviewer is asking for"</pre>
+            </li>
+            <li>
+              <pre class="codeblock">"Find every place this component is used before I rename it"</pre>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tout-banner" style="margin-top:40px;">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          <span class="term-chip" style="background:#ffffff;">/init</span> is worth knowing on its own: it's a built-in skill that scans a
+          repo and writes a starter <span class="term-chip" style="background:#ffffff;">CLAUDE.md</span> for it. Landing in a codebase that
+          doesn't have one yet (see Hidden files below) is exactly when to reach for it.
+        </p>
+      </div>
+
+      <p class="elv-text-sm elv-text-subtle elv-mt-4 elv-max-w-2xl">
+        Specificity is what makes any of this work — "fix my code" gives an agent nothing to anchor on;
+        "the submit button doesn't disable while saving" gives it something to find.
+      </p>
+    </section>
+
     <!-- SECTION 3: SHIPPING A CHANGE -->
     <section>
       <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Shipping a change</h2>
@@ -382,53 +429,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- SECTION 4: AGENTS ON A REPO -->
-    <section>
-      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Using an agent to look at a repo</h2>
-      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
-        You know what should happen — <strong>you direct, the agent executes.</strong> It can read a codebase
-        the way you'd skim it, just faster, and hold more of it in mind at once. A few prompts that work well:
-      </p>
-
-      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
-        <div class="elv-content-card__body">
-          <ul style="margin:0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:14px;">
-            <li>
-              <pre class="codeblock">"Explore this repo and give me a high-level summary of what it does"</pre>
-            </li>
-            <li>
-              <pre class="codeblock">"Where is the login button styled? I want to change its color"</pre>
-            </li>
-            <li>
-              <pre class="codeblock">"Summarize what changed in the last 5 commits"</pre>
-            </li>
-            <li>
-              <pre class="codeblock">"Look at PR #142 and tell me what the reviewer is asking for"</pre>
-            </li>
-            <li>
-              <pre class="codeblock">"Find every place this component is used before I rename it"</pre>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tout-banner" style="margin-top:40px;">
-        <div class="tout-banner__icon">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
-        </div>
-        <p class="tout-banner__text">
-          <span class="term-chip" style="background:#ffffff;">/init</span> is worth knowing on its own: it's a built-in skill that scans a
-          repo and writes a starter <span class="term-chip" style="background:#ffffff;">CLAUDE.md</span> for it. Landing in a codebase that
-          doesn't have one yet (see the next section) is exactly when to reach for it.
-        </p>
-      </div>
-
-      <p class="elv-text-sm elv-text-subtle elv-mt-4 elv-max-w-2xl">
-        Specificity is what makes any of this work — "fix my code" gives an agent nothing to anchor on;
-        "the submit button doesn't disable while saving" gives it something to find.
-      </p>
     </section>
 
     <!-- SECTION 5: HIDDEN FILES -->
