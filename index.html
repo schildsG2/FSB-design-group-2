@@ -109,13 +109,19 @@
           data-selected="false">
           Prototyping
         </div>
+        <div
+          class="filter-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral elv-rounded-sm elv-h-9 elv-px-4 elv-py-2 elv-text-sm elv-font-medium"
+          data-tag="teaching-patterns"
+          data-selected="false">
+          Teaching Patterns
+        </div>
       </div>
     </div>
 
     <!-- Epics Section -->
     <div class="elv-mb-4">
       <h2 class="elv-text-lg elv-font-bold elv-text-default">
-        Epics <span class="elv-text-lg elv-font-normal elv-text-subtle" id="epicCount">(3)</span>
+        Epics <span class="elv-text-lg elv-font-normal elv-text-subtle" id="epicCount">(4)</span>
       </h2>
     </div>
 
@@ -213,6 +219,39 @@
         </div>
         <div class="elv-text-xs elv-text-subtle elv-leading-relaxed elv-flex-1">
           Rapid prototyping explorations and design concept validation.
+        </div>
+        <div class="elv-pt-3">
+          <div class="elv-text-xs elv-text-nonessential">Sep 30, 2026</div>
+        </div>
+        <span class="epic-arrow elv-absolute elv-text-sm elv-text-neutral-30 elv-transition-all" style="bottom: 1.5rem; right: 1.5rem;">→</span>
+      </a>
+
+      <!-- Teaching Patterns -->
+      <a href="./epics/teaching-patterns/index.html"
+         class="epic-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium hover:elv--translate-y-0-5 elv-relative"
+         data-tags="teaching-patterns"
+         data-date="2026-09-30"
+         data-name="Teaching Patterns"
+         style="text-decoration: none; display: flex; flex-direction: column; gap: 12px;">
+        <div class="elv-flex elv-items-start elv-justify-between elv-gap-3">
+          <div class="elv-w-9 elv-h-9 elv-rounded-md elv-flex elv-items-center elv-justify-center" style="background: #eef7ee; color: #1a7a2e;">
+            <svg class="elv-icon elv-icon-lg elv-icon-fill-current" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.5 17C4.0875 17 3.73437 16.8531 3.44062 16.5594C3.14687 16.2656 3 15.9125 3 15.5V3H4.5V15.5H17V17H4.5ZM5.5 14.5V7.5H8.5V14.5H5.5ZM9.5 14.5V4H12.5V14.5H9.5ZM13.5 14.5V10.5H16.5V14.5H13.5Z"/>
+            </svg>
+          </div>
+          <div
+            class="tag-chip elv-inline-flex elv-w-fit elv-items-center elv-justify-center elv-ease-in-out elv-duration-150 elv-cursor-pointer elv-bg-neutral-10 elv-text-neutral hover:elv-bg-primary-30 hover:elv-text-primary data-[selected=true]:elv-bg-primary-20 data-[selected=true]:elv-text-primary elv-rounded-xs elv-h-6 elv-p-0.5"
+            data-tag="teaching-patterns"
+            data-selected="false"
+            onclick="event.preventDefault(); event.stopPropagation(); window.filterByTag('teaching-patterns');">
+            <span class="elv-text-sm elv-font-medium elv-px-0.5 elv-text-inherit elv-cursor-pointer elv-whitespace-nowrap">Teaching Patterns</span>
+          </div>
+        </div>
+        <div class="elv-text-base elv-font-bold elv-text-default elv-leading-snug">
+          Teaching Patterns
+        </div>
+        <div class="elv-text-xs elv-text-subtle elv-leading-relaxed elv-flex-1">
+          Competitive analysis of how other orgs teach dev fundamentals to designers — synthesized into pedagogical patterns.
         </div>
         <div class="elv-pt-3">
           <div class="elv-text-xs elv-text-nonessential">Sep 30, 2026</div>

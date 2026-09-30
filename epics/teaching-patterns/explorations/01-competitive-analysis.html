@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitive Analysis &amp; Pedagogical Patterns</title>
+
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/tokens/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/components/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/utilities.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/icons/icons.css">
+
+  <style>
+    body { margin: 0; background: var(--bg-neutral-5); }
+    html { scroll-behavior: smooth; }
+
+    code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-neutral-10, #f2f2f3);
+      color: var(--text-default);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    table.matrix { width: 100%; border-collapse: collapse; }
+    table.matrix th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      background: #fafafa;
+      padding: 10px 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    table.matrix td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 13px;
+      color: var(--text-default);
+      vertical-align: top;
+    }
+    table.matrix tr:last-child td { border-bottom: none; }
+    table.matrix td:first-child { font-weight: 600; white-space: nowrap; }
+
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+    }
+    .rating--high { background: #ecfdf5; color: #065f46; }
+    .rating--mid { background: #fffbeb; color: #92400e; }
+    .rating--low { background: #fef2f2; color: #991b1b; }
+
+    .pattern-card {
+      background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+    .pattern-num {
+      flex: 0 0 32px;
+      height: 32px;
+      width: 32px;
+      border-radius: var(--radius-full);
+      background: #f2f0f9;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .toc-link {
+      color: var(--text-subtle);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 150ms ease;
+    }
+    .toc-link:hover { color: var(--text-primary); }
+
+    .source-tag {
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-neutral-10);
+      color: var(--text-subtle);
+    }
+
+    .elv-accordion__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      text-align: left;
+    }
+    .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .elv-accordion__item:last-child { border-bottom: none; }
+    .elv-accordion__content[aria-hidden="true"] { display: none; }
+    .elv-accordion__content[aria-hidden="false"] { display: block; }
+    .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
+    .elv-accordion__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 150ms ease;
+    }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    @media (max-width: 768px) {
+      table.matrix { font-size: 12px; }
+      table.matrix th, table.matrix td { padding: 8px 6px; }
+      .matrix-scroll { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div elv class="elv-bg-neutral-5 elv-min-h-screen">
+
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list" style="display:inline-flex; align-items:center; gap:2px;">
+          <li style="display:flex; align-items:center; gap:2px;">
+            <a href="../../../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">FSB Design Group 2</a>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
+          </li>
+          <li style="display:flex; align-items:center; gap:2px;">
+            <a href="../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">Teaching Patterns</a>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
+          </li>
+          <li>
+            <span style="color:#84838a; font-size:12px;" aria-current="page">01 — Competitive Analysis</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
+        Competitive Analysis &amp; Pedagogical Patterns
+      </h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">
+        How the best resources teach git, PRs, and AI coding agents to designers and non-engineers — what works,
+        what sequences they use, and what patterns our primer should steal.
+      </p>
+    </div>
+  </header>
+
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3" style="display:flex; flex-direction:column; gap:48px;">
+
+    <!-- TABLE OF CONTENTS -->
+    <nav>
+      <h2 class="elv-text-sm elv-font-bold elv-text-nonessential elv-mb-3" style="letter-spacing:0.04em; text-transform:uppercase;">On this page</h2>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <a href="#landscape" class="toc-link">1. Competitor landscape</a>
+        <a href="#matrix" class="toc-link">2. Comparison matrix</a>
+        <a href="#sequencing" class="toc-link">3. Topic sequencing analysis</a>
+        <a href="#patterns" class="toc-link">4. Patterns that work</a>
+        <a href="#gaps" class="toc-link">5. Gaps &amp; opportunities</a>
+        <a href="#implications" class="toc-link">6. Implications for our primer</a>
+      </div>
+    </nav>
+
+    <!-- SECTION 1: LANDSCAPE -->
+    <section id="landscape">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">1. Competitor landscape</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Six resources that teach version control, PRs, or AI coding agents to non-engineers — each with a
+        different pedagogical angle. Not ranked by quality; ranked by relevance to our audience (designers
+        entering dev-adjacent workflows).
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__body" style="padding:20px;">
+            <div class="elv-flex elv-items-start elv-justify-between elv-gap-3 elv-mb-2">
+              <div>
+                <div class="elv-text-base elv-font-bold elv-text-default">Design with Code</div>
+                <div class="elv-text-xs elv-text-subtle">designwithcode.dev &middot; Free course by a staff product designer</div>
+              </div>
+              <span class="rating rating--high">Best overall</span>
+            </div>
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Full structured course from a designer who ships code daily. Sequences: mental models first,
+              then terminal basics, then git, then real project. Framing: "you already think in systems —
+              code is just another material." Strongest at bridging design vocabulary to dev concepts.
+            </p>
+          </div>
+        </div>
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__body" style="padding:20px;">
+            <div class="elv-flex elv-items-start elv-justify-between elv-gap-3 elv-mb-2">
+              <div>
+                <div class="elv-text-base elv-font-bold elv-text-default">Git for Product Designers</div>
+                <div class="elv-text-xs elv-text-subtle">johnhurley.design &middot; Written primer</div>
+              </div>
+              <span class="rating rating--high">Best written</span>
+            </div>
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Concise, single-page primer targeting product designers. Explains why designers should care
+              (collaboration, autonomy, credibility). Uses analogies to design tools (branches = artboards,
+              commits = version history). No command-line intimidation — starts with GitHub Desktop GUI.
+            </p>
+          </div>
+        </div>
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__body" style="padding:20px;">
+            <div class="elv-flex elv-items-start elv-justify-between elv-gap-3 elv-mb-2">
+              <div>
+                <div class="elv-text-base elv-font-bold elv-text-default">Learn Git Branching</div>
+                <div class="elv-text-xs elv-text-subtle">pcottle.github.io &middot; Interactive visualizer</div>
+              </div>
+              <span class="rating rating--high">Best practice tool</span>
+            </div>
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Interactive sandbox with visual commit graphs that animate as you type commands. No local
+              setup required — runs entirely in browser. Exceptionally good at making branching/merging
+              intuitive through spatial visualization. Not designer-specific, but the visual approach
+              maps well to how designers think.
+            </p>
+          </div>
+        </div>
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__body" style="padding:20px;">
+            <div class="elv-flex elv-items-start elv-justify-between elv-gap-3 elv-mb-2">
+              <div>
+                <div class="elv-text-base elv-font-bold elv-text-default">Claude Code for Everyone</div>
+                <div class="elv-text-xs elv-text-subtle">ccforeveryone.com &middot; Interactive course taught inside Claude Code</div>
+              </div>
+              <span class="rating rating--high">Best for agents</span>
+            </div>
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Meta-pedagogical approach: teaches you to use an AI coding agent by using that same
+              agent as the teaching medium. Learner works inside Claude Code from minute one, building
+              a real project. Framing: "direct AI with precision" rather than "learn to code."
+              Strongest at reducing the intimidation of the terminal.
+            </p>
+          </div>
+        </div>
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__body" style="padding:20px;">
+            <div class="elv-flex elv-items-start elv-justify-between elv-gap-3 elv-mb-2">
+              <div>
+                <div class="elv-text-base elv-font-bold elv-text-default">Designer's Checklist for Reviewing PRs</div>
+                <div class="elv-text-xs elv-text-subtle">bitovi.com &middot; Blog post / checklist</div>
+              </div>
+              <span class="rating rating--mid">Targeted niche</span>
+            </div>
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Narrows to one specific skill: how designers should read and comment on pull requests.
+              Practical checklist format. Good at translating "design review" instincts into "code review"
+              actions. Weakness: assumes you already know what a PR is.
+            </p>
+          </div>
+        </div>
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__body" style="padding:20px;">
+            <div class="elv-flex elv-items-start elv-justify-between elv-gap-3 elv-mb-2">
+              <div>
+                <div class="elv-text-base elv-font-bold elv-text-default">Code for Designers</div>
+                <div class="elv-text-xs elv-text-subtle">DiDoesDigital &middot; Curated link hub</div>
+              </div>
+              <span class="rating rating--low">Link collection</span>
+            </div>
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Aggregator of resources rather than original content. Useful as a discovery tool but
+              doesn't teach directly. Included here because it reflects what the community considers
+              important enough to curate — git and terminal show up, but AI agents are conspicuously absent.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: COMPARISON MATRIX -->
+    <section id="matrix">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">2. Comparison matrix</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Side-by-side across the dimensions that matter for our audience: how they teach, what they cover,
+        and how accessible they are to someone with zero terminal experience.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding:0;">
+          <div class="matrix-scroll">
+            <table class="matrix">
+              <thead>
+                <tr>
+                  <th>Resource</th>
+                  <th>Format</th>
+                  <th>Mental model first?</th>
+                  <th>Hands-on?</th>
+                  <th>Designer framing?</th>
+                  <th>Covers agents?</th>
+                  <th>Covers PRs?</th>
+                  <th>Zero-setup?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Design with Code</td>
+                  <td>Course (video + text)</td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--high">Strong</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                </tr>
+                <tr>
+                  <td>Git for Product Designers</td>
+                  <td>Written primer</td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--high">Strong</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--mid">Briefly</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                </tr>
+                <tr>
+                  <td>Learn Git Branching</td>
+                  <td>Interactive sandbox</td>
+                  <td><span class="rating rating--mid">Implicit</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                </tr>
+                <tr>
+                  <td>Claude Code for Everyone</td>
+                  <td>Interactive course</td>
+                  <td><span class="rating rating--mid">Some</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--mid">Partial</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--mid">Briefly</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                </tr>
+                <tr>
+                  <td>Bitovi PR Checklist</td>
+                  <td>Blog checklist</td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--high">Strong</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                </tr>
+                <tr>
+                  <td>Code for Designers</td>
+                  <td>Link hub</td>
+                  <td><span class="rating rating--low">N/A</span></td>
+                  <td><span class="rating rating--low">N/A</span></td>
+                  <td><span class="rating rating--high">Strong</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--low">No</span></td>
+                  <td><span class="rating rating--high">Yes</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="elv-content-card elv-content-card--bordered elv-mt-4" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 16px 20px;">
+          <p class="elv-text-sm elv-text-default" style="margin:0;">
+            <strong>Key gap:</strong> No single resource combines all three of designer-specific framing,
+            hands-on practice, and AI agent coverage. The closest pairing is Design with Code (framing + hands-on)
+            plus Claude Code for Everyone (agent coverage) — but they don't cross-reference each other.
+            Our primer can occupy this exact intersection.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: SEQUENCING -->
+    <section id="sequencing">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">3. Topic sequencing analysis</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        How do these resources order their material? The sequence choices reveal assumptions about
+        what learners need to feel safe before going deeper.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding:0;">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th>Resource</th>
+                <th>Sequence</th>
+                <th>Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Design with Code</td>
+                <td>Mental model &rarr; Terminal &rarr; Git &rarr; Project</td>
+                <td>Builds confidence in layers — you understand the "why" before any command</td>
+              </tr>
+              <tr>
+                <td>Git for Product Designers</td>
+                <td>Why care &rarr; Analogies &rarr; GUI first &rarr; Commands later</td>
+                <td>Motivation-first — establishes the payoff before asking for effort</td>
+              </tr>
+              <tr>
+                <td>Learn Git Branching</td>
+                <td>Commits &rarr; Branches &rarr; Merging &rarr; Rebasing &rarr; Advanced</td>
+                <td>Bottom-up technical progression — each concept depends on the previous</td>
+              </tr>
+              <tr>
+                <td>Claude Code for Everyone</td>
+                <td>Install agent &rarr; First prompt &rarr; Build project &rarr; Iterate</td>
+                <td>Ship-something-immediately approach — git is encountered naturally, not taught upfront</td>
+              </tr>
+              <tr>
+                <td>Bitovi PR Checklist</td>
+                <td>What to look at &rarr; What to check &rarr; How to comment</td>
+                <td>Task-based — skips theory entirely, goes straight to the job to be done</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="elv-content-card elv-content-card--bordered elv-mt-4" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 16px 20px;">
+          <p class="elv-text-sm elv-text-default" style="margin:0;">
+            <strong>Two viable strategies emerge:</strong> "mental model first" (Design with Code, Git for Product Designers)
+            vs. "ship first, understand later" (Claude Code for Everyone). Both work — but for our audience
+            (designers entering an existing codebase, not starting greenfield), mental-model-first is safer.
+            You need to understand what a branch <em>is</em> before you can evaluate what an agent did on one.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: PATTERNS THAT WORK -->
+    <section id="patterns">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">4. Patterns that work</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Across all six resources, these pedagogical patterns consistently produce the best outcomes.
+        Each is something our primer already does, should adopt, or should consider.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <div class="pattern-card">
+          <div class="elv-flex elv-gap-4">
+            <div class="pattern-num">1</div>
+            <div>
+              <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-1">Lead with a mental model, not commands</div>
+              <div class="elv-text-sm elv-text-subtle">
+                The best resources explain <em>what</em> a concept is and <em>why</em> it exists before showing
+                the command that does it. Design with Code: "Think of a branch as a parallel artboard." Git for
+                Product Designers: "Commits are like saving a version in Figma — except they have a message."
+                Our primer does this with the core loop diagram — keep that pattern for every new concept.
+              </div>
+              <div class="elv-mt-2">
+                <span class="source-tag">Design with Code</span>
+                <span class="source-tag">Git for Product Designers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-card">
+          <div class="elv-flex elv-gap-4">
+            <div class="pattern-num">2</div>
+            <div>
+              <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-1">Use design-tool analogies, not CS analogies</div>
+              <div class="elv-text-sm elv-text-subtle">
+                "Branch = artboard" lands immediately. "Branch = pointer to a commit hash in a directed acyclic graph"
+                does not. The best resources consistently translate into the learner's existing vocabulary:
+                branches as artboards, commits as version history snapshots, diffs as redlines, PRs as design crits.
+                This isn't dumbing down — it's meeting expertise where it is.
+              </div>
+              <div class="elv-mt-2">
+                <span class="source-tag">Git for Product Designers</span>
+                <span class="source-tag">Design with Code</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-card">
+          <div class="elv-flex elv-gap-4">
+            <div class="pattern-num">3</div>
+            <div>
+              <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-1">Visual + spatial over textual</div>
+              <div class="elv-text-sm elv-text-subtle">
+                Learn Git Branching's animated commit graphs teach branching faster than any written explanation.
+                Design with Code uses diagrams before terminal screenshots. Designers are spatial thinkers —
+                a flow diagram of the git loop communicates more than a bullet list of commands. Our primer's
+                flow-row component already does this well.
+              </div>
+              <div class="elv-mt-2">
+                <span class="source-tag">Learn Git Branching</span>
+                <span class="source-tag">Design with Code</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-card">
+          <div class="elv-flex elv-gap-4">
+            <div class="pattern-num">4</div>
+            <div>
+              <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-1">Frame the agent as a collaborator, not a crutch</div>
+              <div class="elv-text-sm elv-text-subtle">
+                Claude Code for Everyone: "direct AI with precision." This framing works because it positions
+                the designer as the one in control — the agent executes, you direct. Contrast with "just let the
+                AI do it" (erodes agency) or "learn to code first" (gatekeeps). The ideal framing: "You already
+                know what should happen. The agent knows how to make it happen. Your job is to bridge those."
+              </div>
+              <div class="elv-mt-2">
+                <span class="source-tag">Claude Code for Everyone</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-card">
+          <div class="elv-flex elv-gap-4">
+            <div class="pattern-num">5</div>
+            <div>
+              <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-1">Show the real thing, not a sandbox version</div>
+              <div class="elv-text-sm elv-text-subtle">
+                The most effective resources use real repos, real PRs, real terminals — not toy examples.
+                Claude Code for Everyone has you build a real project. Design with Code uses actual open-source repos.
+                Sandboxes (Learn Git Branching) are great for specific mechanics, but the "it works on a real
+                project" confidence boost is what gets people over the activation energy threshold.
+              </div>
+              <div class="elv-mt-2">
+                <span class="source-tag">Claude Code for Everyone</span>
+                <span class="source-tag">Design with Code</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pattern-card">
+          <div class="elv-flex elv-gap-4">
+            <div class="pattern-num">6</div>
+            <div>
+              <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-1">Establish "why should I care" before any teaching</div>
+              <div class="elv-text-sm elv-text-subtle">
+                Git for Product Designers opens with: "Understanding git gives you autonomy, credibility with
+                engineers, and the ability to ship your own fixes." Design with Code opens with what designers
+                can <em>do</em> once they know this material. Resources that skip motivation and jump to
+                <span class="term-chip">git init</span> lose designers in the first paragraph.
+              </div>
+              <div class="elv-mt-2">
+                <span class="source-tag">Git for Product Designers</span>
+                <span class="source-tag">Design with Code</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: GAPS -->
+    <section id="gaps">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">5. Gaps &amp; opportunities</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Topics that the competitive landscape doesn't cover well (or at all) — each represents an
+        opportunity for the FSB program.
+      </p>
+
+      <div class="elv-accordion" data-accordion>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="true" aria-controls="gap-agents">
+            <span>Agent-on-a-repo + git fundamentals in one resource</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="gap-agents" aria-hidden="false" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                No resource teaches both git fundamentals <em>and</em> AI agent usage together.
+                Claude Code for Everyone assumes you'll learn git by encountering it; git resources don't
+                mention agents at all. Our primer is the only thing we've found that does both in one place —
+                this is our strongest differentiator.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="gap-devtools">
+            <span>Browser DevTools for designers</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="gap-devtools" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A natural next exploration: how to inspect, tweak, and screenshot production UI
+                using Chrome DevTools — the skill designers most often wish they had when filing bugs
+                or proposing changes. Adjacent to our current material.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="gap-tokens">
+            <span>Design tokens / design-to-code handoff</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="gap-tokens" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Understanding how Figma variables map to CSS custom properties / design tokens.
+                Directly relevant to Elevate — would let FSB participants read and contribute
+                to design system code rather than just consuming it.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="gap-a11y">
+            <span>Accessibility fundamentals through code</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="gap-a11y" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                ARIA attributes, semantic HTML, keyboard navigation — taught from the design side.
+                Designers who can read and audit HTML for accessibility are exponentially more effective
+                in code review. Few resources bridge the design-to-a11y-code gap.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="gap-api">
+            <span>APIs &amp; JSON literacy</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="gap-api" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Understanding what an API returns, how to read JSON, and why the data shape matters for UI.
+                Designers who can read API responses can prototype with real data structures
+                rather than lorem ipsum — makes prototypes immediately more useful.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 6: IMPLICATIONS -->
+    <section id="implications">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">6. Implications for our primer</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Specific, actionable takeaways for improving the Version Control &amp; Agents Primer
+        based on what the best resources do that we don't yet.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding:0;">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th>What to change</th>
+                <th>Why</th>
+                <th>Inspired by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Add a "why should I care" opening</td>
+                <td>The primer jumps straight into the core loop — adding 2-3 sentences on the payoff (autonomy, credibility, shipping power) would hook the audience faster</td>
+                <td><span class="source-tag">Git for Product Designers</span></td>
+              </tr>
+              <tr>
+                <td>Add design-tool analogies alongside terms</td>
+                <td>Each accordion term could include a one-line "in design terms" translation (branch = artboard, commit = version snapshot, diff = redline)</td>
+                <td><span class="source-tag">Git for Product Designers</span></td>
+              </tr>
+              <tr>
+                <td>Strengthen the agent-framing language</td>
+                <td>Currently says "an agent can read a codebase" — should frame as "you direct, it executes" to position the designer as the one in control</td>
+                <td><span class="source-tag">Claude Code for Everyone</span></td>
+              </tr>
+              <tr>
+                <td>Add a "try it" sandbox link</td>
+                <td>Link to Learn Git Branching for hands-on practice — the primer is read-only; pairing it with an interactive tool covers both learning modes</td>
+                <td><span class="source-tag">Learn Git Branching</span></td>
+              </tr>
+              <tr>
+                <td>Consider a "reviewing a PR" section</td>
+                <td>The Bitovi checklist shows there's demand for this specific skill — and it's the most likely first git interaction for a designer joining a dev team</td>
+                <td><span class="source-tag">Bitovi PR Checklist</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer class="elv-mt-4 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+      <a href="../index.html" class="elv-text-nonessential hover:elv-text-primary">&larr; Back to Teaching Patterns</a>
+    </footer>
+
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var accordions = document.querySelectorAll('[data-accordion]');
+  accordions.forEach(function(accordion) {
+    var headers = accordion.querySelectorAll('.elv-accordion__header');
+    headers.forEach(function(header) {
+      header.addEventListener('click', function() {
+        var isExpanded = header.getAttribute('aria-expanded') === 'true';
+        var contentId = header.getAttribute('aria-controls');
+        var content = document.getElementById(contentId);
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

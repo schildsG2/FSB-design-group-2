@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dev Fundamentals — Design Explorations</title>
+  <title>Teaching Patterns — Design Explorations</title>
   <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/tokens/elevate.css">
   <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/components/elevate.css">
   <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/utilities.css">
@@ -11,7 +11,6 @@
   <style>
     body { margin: 0; }
 
-    /* Breadcrumbs */
     .elv-breadcrumbs {
       display: inline-flex;
       align-items: center;
@@ -43,13 +42,11 @@
       fill: #6f6d78;
     }
 
-    /* Exploration card hover */
     .exploration-card:hover .card-arrow {
       color: var(--text-primary);
       transform: translateX(3px);
     }
 
-    /* Responsive grid */
     @media (min-width: 750px) {
       .exploration-grid {
         grid-template-columns: repeat(2, 1fr) !important;
@@ -66,7 +63,6 @@
 
 <div elv class="elv-bg-neutral-5 elv-min-h-screen">
 
-  <!-- Header -->
   <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
     <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
       <nav aria-label="Breadcrumb" class="elv-mb-3">
@@ -78,22 +74,21 @@
             </svg>
           </li>
           <li class="elv-breadcrumb-item">
-            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">Dev Fundamentals</span>
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">Teaching Patterns</span>
           </li>
         </ol>
       </nav>
       <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
-        Dev Fundamentals
+        Teaching Patterns
       </h1>
       <p class="elv-text-base elv-text-subtle elv-max-w-xl elv-leading-relaxed">
-        Developer tooling, workflow improvements, and foundational development patterns.
+        Competitive analysis of how other orgs and educators teach dev fundamentals to design-oriented and entry-level audiences — synthesized into pedagogical patterns, not just a link list.
       </p>
     </div>
   </header>
 
   <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3">
 
-    <!-- Explorations Section -->
     <div class="elv-mb-4">
       <h2 class="elv-text-lg elv-font-bold elv-text-default">
         Explorations <span class="elv-text-lg elv-font-normal elv-text-subtle">(1)</span>
@@ -102,26 +97,23 @@
 
     <div class="exploration-grid elv-grid elv-grid-cols-1 elv-gap-4 elv-mb-12">
 
-      <!-- Explorations will be added here as you create them with /new-exploration -->
-      <a href="explorations/01-version-control-and-agents-primer.html"
+      <a href="explorations/01-competitive-analysis.html"
          class="exploration-card elv-block elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6 elv-no-underline elv-transition-all hover:elv-shadow-2 hover:elv-border-medium elv-relative"
          style="text-decoration:none; display:flex; flex-direction:column; gap:12px;">
         <div class="elv-text-xs elv-font-bold elv-text-nonessential" style="letter-spacing:0.04em; text-transform:uppercase;">01</div>
         <div class="elv-text-base elv-font-bold elv-text-default elv-leading-snug">
-          Version Control &amp; Agents Primer
+          Competitive Analysis &amp; Pedagogical Patterns
         </div>
         <div class="elv-text-xs elv-text-subtle elv-leading-relaxed elv-flex-1">
-          Git fundamentals, key terms, what happens in a PR, how to point an agent at a repo, and the hidden
-          files (CLAUDE.md, .claude/*.skill) that support that.
+          How the best resources teach git, PRs, and AI agents to non-engineers — comparison matrix, topic sequencing analysis, and synthesized patterns that work.
         </div>
         <span class="card-arrow elv-absolute elv-text-sm elv-text-neutral-30 elv-transition-all" style="bottom:1.5rem; right:1.5rem;">→</span>
       </a>
 
     </div>
 
-    <!-- Footer -->
     <footer class="elv-mt-16 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
-      <a href="../../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
+      <a href="../../index.html" class="elv-text-nonessential hover:elv-text-primary">&larr; Back to FSB Design Group 2</a>
     </footer>
 
   </div>
