@@ -1,0 +1,115 @@
+---
+description: Start a new numbered exploration in the current epic
+---
+
+You are helping the user start a new design exploration in their squad explorations repository.
+
+## Your Task
+
+### Step 0: Find Repository Root
+
+Before starting, determine the repository root:
+```bash
+REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+```
+
+If this fails (not a git repo), inform the user they must run this from within their explorations repository.
+
+All file paths below use `{repo-root}` as the base.
+
+### Step 1: Determine the Epic Directory
+
+- The user will provide an epic name (e.g., "search-results", "bulk-purchase")
+- Epic path: `{repo-root}/epics/{epic-name}/explorations/`
+- Verify the epic exists at `{repo-root}/epics/{epic-name}/`. If not, inform the user and suggest running `/new-epic` first.
+
+### Step 2: Create Explorations Directory (if needed)
+
+If `{repo-root}/epics/{epic-name}/explorations/` doesn't exist, create it automatically.
+
+### Step 3: Find the Next Exploration Number
+
+- List all `##-*.html` files in the explorations directory
+- Find the highest number (e.g., if `01-base.html` and `02-refined.html` exist, next is `03`)
+- If no numbered explorations exist, start with `01`
+
+### Step 4: Get the Exploration Name
+
+- Ask the user for a descriptive kebab-case name (e.g., "pricing-tiers", "null-state")
+- The final filename will be: `{number}-{name}.html` (e.g., `03-pricing-tiers.html`)
+- Validate that the filename doesn't already exist (edge case: if it does, increment the number)
+
+### Step 5: Copy the Starter Template
+
+- Copy `{repo-root}/shared/exploration-starter.html`
+- To: `{repo-root}/epics/{epic-name}/explorations/{number}-{name}.html`
+- Update the `<title>` tag to match the exploration name (title case, e.g., "Pricing Tiers")
+
+### Step 6: Update the Epic's index.html
+
+- Read `{repo-root}/epics/{epic-name}/index.html`
+- Find the exploration count element (usually: `Explorations <span>(N)</span>`)
+- Increment the count
+- Add a new entry to the explorations gallery linking to the new file
+- Follow the existing pattern in the index (usually a card or list item)
+- If no index.html exists, skip this step and inform the user
+
+### Step 7: Offer to Open the File
+
+Ask the user:
+**"Exploration created! Would you like to:"**
+1. Open in browser (`open {repo-root}/epics/{epic-name}/explorations/{number}-{name}.html`)
+2. Continue working (do nothing)
+
+If they choose 1, open the file.
+
+### Step 8: Report Completion
+
+Show the user:
+- Full path to the new exploration
+- Updated exploration count in epic
+- Reminder that they can view the epic gallery at `{repo-root}/epics/{epic-name}/index.html`
+
+## Example Interaction
+
+User: `/new-exploration search-results`
+
+You:
+1. Detect repo root: `/Users/jane/projects/buyer-intent-explorations`
+2. Verify epic exists at `epics/search-results/` ✓
+3. Create explorations/ directory if needed
+4. List explorations → find next number is `03`
+5. Ask: "What should this exploration be called? (kebab-case, e.g., 'advanced-filters')"
+6. User responds: "query-refinement"
+7. Copy template → `epics/search-results/explorations/03-query-refinement.html`
+8. Update title to "Query Refinement"
+9. Add entry to `epics/search-results/index.html` and increment count
+10. Ask if they want to open the file
+11. Report: "✅ Created exploration 03-query-refinement.html (3 total explorations in this epic)"
+
+## Path Adjustments in Starter Template
+
+The starter template has relative paths for CSS/JS that assume it's in an epic's explorations folder:
+```html
+<link rel="stylesheet" href="../../shared/elevate-prototyping-kit/tokens/elevate.css">
+<link rel="stylesheet" href="../../shared/elevate-prototyping-kit/components/elevate.css">
+<link rel="stylesheet" href="../../shared/elevate-prototyping-kit/utilities.css">
+<link rel="stylesheet" href="../../shared/elevate-prototyping-kit/icons/icons.css">
+```
+
+These paths are CORRECT for explorations in `epics/{epic}/explorations/` — do NOT modify the prefix depth.
+
+## Edge Cases
+
+- **No explorations directory**: Create it first, then proceed
+- **No index.html**: Skip index update, inform user
+- **Non-standard numbering**: If explorations exist without numbers, ask user how to proceed
+- **Name conflict**: If `{number}-{name}.html` exists, increment number
+
+## Important
+
+- Always use the starter template from: `{repo-root}/shared/exploration-starter.html`
+- Never invent exploration names — always ask the user
+- Keep numbering sequential and zero-padded (01, 02, not 1, 2)
+- Auto-create the explorations/ directory if it doesn't exist (don't error out)
+- Always update the exploration count in the epic's index.html

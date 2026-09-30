@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEO/SEO — Design Explorations</title>
+  <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/tokens/elevate.css">
+  <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/components/elevate.css">
+  <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/utilities.css">
+  <link rel="stylesheet" href="../../shared/elevate-prototyping-kit/icons/icons.css">
+  <style>
+    body { margin: 0; }
+
+    /* Breadcrumbs */
+    .elv-breadcrumbs {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .elv-breadcrumb-item {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .elv-breadcrumb-link {
+      color: #4c4b53;
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 16px;
+      transition: color 150ms ease;
+    }
+    .elv-breadcrumb-link:hover {
+      color: #201f23;
+    }
+    .elv-breadcrumb-link--current {
+      color: #84838a;
+      pointer-events: none;
+    }
+    .elv-breadcrumb-separator {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      fill: #6f6d78;
+    }
+
+    /* Exploration card hover */
+    .exploration-card:hover .card-arrow {
+      color: var(--text-primary);
+      transform: translateX(3px);
+    }
+
+    /* Responsive grid */
+    @media (min-width: 750px) {
+      .exploration-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (min-width: 1000px) {
+      .exploration-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div elv class="elv-bg-neutral-5 elv-min-h-screen">
+
+  <!-- Header -->
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list">
+          <li class="elv-breadcrumb-item">
+            <a href="../../index.html" class="elv-breadcrumb-link">FSB Design Group 2</a>
+            <svg class="elv-breadcrumb-separator" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/>
+            </svg>
+          </li>
+          <li class="elv-breadcrumb-item">
+            <span class="elv-breadcrumb-link elv-breadcrumb-link--current" aria-current="page">AEO/SEO</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
+        AEO/SEO
+      </h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-xl elv-leading-relaxed">
+        Exploring AI Engine Optimization and Search Engine Optimization strategies for G2 product pages.
+      </p>
+    </div>
+  </header>
+
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3">
+
+    <!-- Explorations Section -->
+    <div class="elv-mb-4">
+      <h2 class="elv-text-lg elv-font-bold elv-text-default">
+        Explorations <span class="elv-text-lg elv-font-normal elv-text-subtle">(0)</span>
+      </h2>
+    </div>
+
+    <div class="exploration-grid elv-grid elv-grid-cols-1 elv-gap-4 elv-mb-12">
+
+      <!-- Explorations will be added here as you create them with /new-exploration -->
+
+    </div>
+
+    <!-- Empty State -->
+    <div class="elv-text-center elv-py-12">
+      <div class="elv-text-base elv-text-subtle elv-mb-2">No explorations yet</div>
+      <div class="elv-text-sm elv-text-nonessential">
+        Use <code class="elv-px-2 elv-py-1 elv-bg-neutral-10 elv-rounded-xs">/new-exploration aeo-seo</code> to create your first exploration
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="elv-mt-16 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+      <a href="../../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
+    </footer>
+
+  </div>
+
+</div>
+
+</body>
+</html>
