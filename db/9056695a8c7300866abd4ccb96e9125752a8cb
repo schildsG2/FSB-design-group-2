@@ -1,0 +1,34 @@
+scripts/build_meeting_page.py
+  s_7dbcee52cbf491::t_df2373c0ef8a1f 318,320
+  s_7dbcee52cbf491::t_eab717db1979eb 303-304,313-316
+  s_7dbcee52cbf491::t_932d0a5eb94e74 336-337
+  s_7dbcee52cbf491::t_cb98eaed949965 1-155,157-302,305-312,317,319,321-335,338-359,365-374
+  s_7dbcee52cbf491::t_644ce60b72780b 156
+  s_7dbcee52cbf491::t_cac15f10fef775 360-364
+.gitignore
+  s_7dbcee52cbf491::t_7f3d3a3de72b61 15-18
+meetings/README.md
+  s_7dbcee52cbf491::t_dabfe2b6f88a0e 3-5,11-21,23,25-26
+meetings/2026-10-01-fsb-design-group-2-weekly.html
+  s_7dbcee52cbf491::t_036b8c61f84b9a 17-19,24-25,28-29,31,33-34,36-38,53,57,59-60,1991-1992,1995
+index.html
+  s_7dbcee52cbf491::t_f2d91090ce18c2 354
+.claude/log-meeting.skill
+  s_7dbcee52cbf491::t_979e19e6668a2b 1-76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "db9056695a8c7300866abd4ccb96e9125752a8cb",
+  "prompts": {},
+  "sessions": {
+    "s_7dbcee52cbf491": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1bc69322-125b-4b1c-b716-526b5c037467",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Sam Childs <schilds@g2.com>"
+    }
+  }
+}
