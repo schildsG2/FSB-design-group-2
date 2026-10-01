@@ -1,0 +1,21 @@
+epics/aeo-seo/research/01-fsb-ai-assisted-workflow.html
+  s_0afde59b973b65::t_c812cc10cc874c 12-13,22-23,32-156,165,208,210-228,231-238,242-248,250-371,374-382,384-391,393-435,438-663,665,667,669-672,674-693,695-730,733,741-758
+  s_0afde59b973b65::t_2f6bea990b0d66 26
+  s_0afde59b973b65::t_6502021dd89500 759
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e32d09af5e81161ea3afa165ef704db6986a4bc5",
+  "prompts": {},
+  "sessions": {
+    "s_0afde59b973b65": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2d76c49-525a-451c-8c4d-cef1fb94d5e5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Sam Childs <schilds@g2.com>"
+    }
+  }
+}
