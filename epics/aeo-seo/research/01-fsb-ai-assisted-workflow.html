@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/utilities.css">
   <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/icons/icons.css">
   <style>
-    body { margin: 0; }
+    body { margin: 0; background: var(--bg-neutral-5); }
+    html { scroll-behavior: smooth; }
 
     .elv-breadcrumbs { display: inline-flex; align-items: center; gap: 2px; }
     .elv-breadcrumb-item { display: flex; align-items: center; gap: 2px; }
@@ -18,14 +19,141 @@
     .elv-breadcrumb-link--current { color: #84838a; pointer-events: none; }
     .elv-breadcrumb-separator { width: 20px; height: 20px; flex-shrink: 0; fill: #6f6d78; }
 
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
     /* Long-form prose rhythm */
     .doc-prose p { line-height: 1.65; }
-    .doc-prose ul, .doc-prose ol { line-height: 1.65; padding-left: 1.25rem; }
+    .doc-prose ul, .doc-prose ol { line-height: 1.65; padding-left: 1.25rem; list-style: revert; }
     .doc-prose li + li { margin-top: 6px; }
     .doc-prose h2 { scroll-margin-top: 24px; }
 
     .source-list li { padding: 10px 0; border-bottom: 1px solid var(--elv-border-light, #dfdfe2); }
     .source-list li:last-child { border-bottom: none; }
+
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-neutral-10, #f2f2f3);
+      color: var(--text-default);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .step-row {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .step-row:last-child { border-bottom: none; }
+    .step-num {
+      flex: 0 0 32px;
+      height: 32px;
+      width: 32px;
+      border-radius: var(--radius-full);
+      background: #f2f0f9;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    table.fileref { width: 100%; border-collapse: collapse; }
+    table.fileref th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      background: #fafafa;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    table.fileref td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      color: var(--text-default);
+      vertical-align: top;
+    }
+    table.fileref tr:last-child td { border-bottom: none; }
+
+    .elv-accordion__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      text-align: left;
+    }
+    .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .elv-accordion__item:last-child { border-bottom: none; }
+    .elv-accordion__content[aria-hidden="true"] { display: none; }
+    .elv-accordion__content[aria-hidden="false"] { display: block; }
+    .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
+    .elv-accordion__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 150ms ease;
+    }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    /* Tout banner — compact inline callout with icon + text + CTA */
+    .tout-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ebe9f6;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+    }
+    .tout-banner__icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #ffffff;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tout-banner__text {
+      flex: 1 1 auto;
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #342a6a;
+      min-width: 200px;
+    }
+    .tout-banner__cta {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      .tout-banner { flex-wrap: wrap; }
+    }
+
+    @media (min-width: 750px) {
+      .pattern-grid { grid-template-columns: 1fr 1fr !important; }
+    }
   </style>
 </head>
 <body>
@@ -34,7 +162,7 @@
 
   <!-- Header -->
   <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
-    <div class="elv-max-w-4xl elv-w-full elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
       <nav aria-label="Breadcrumb" class="elv-mb-3">
         <ol class="elv-breadcrumbs" role="list">
           <li class="elv-breadcrumb-item">
@@ -77,244 +205,557 @@
     </div>
   </header>
 
-  <div class="elv-max-w-4xl elv-w-full elv-mx-auto elv-py-10 elv-px-3 doc-prose">
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3 doc-prose" style="display:flex; flex-direction:column; gap:96px;">
 
-    <!-- Disclaimer -->
-    <div class="elv-notification notification--warning elv-mb-8" elv>
-      <div class="notification__header">
-        <div class="notification__title">
-          <svg class="icon icon--sm" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 21L12 3L22.5 21H1.5ZM4.35 19.5H19.65L12 6L4.35 19.5ZM12 18.75C12.2125 18.75 12.3906 18.6781 12.5344 18.5344C12.6781 18.3906 12.75 18.2125 12.75 18C12.75 17.7875 12.6781 17.6094 12.5344 17.4656C12.3906 17.3219 12.2125 17.25 12 17.25C11.7875 17.25 11.6094 17.3219 11.4656 17.4656C11.3219 17.6094 11.25 17.7875 11.25 18C11.25 18.2125 11.3219 18.3906 11.4656 18.5344C11.6094 18.6781 11.7875 18.75 12 18.75ZM11.25 16.5H12.75V11.25H11.25V16.5Z"/>
-          </svg>
-          <span class="elv-label elv-label--sm">Research spike — not yet reviewed</span>
+    <!-- INTRO: DISCLAIMER + STATUS -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div class="elv-notification notification--warning" elv>
+        <div class="notification__header">
+          <div class="notification__title">
+            <svg class="icon icon--sm" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 21L12 3L22.5 21H1.5ZM4.35 19.5H19.65L12 6L4.35 19.5ZM12 18.75C12.2125 18.75 12.3906 18.6781 12.5344 18.5344C12.6781 18.3906 12.75 18.2125 12.75 18C12.75 17.7875 12.6781 17.6094 12.5344 17.4656C12.3906 17.3219 12.2125 17.25 12 17.25C11.7875 17.25 11.6094 17.3219 11.4656 17.4656C11.3219 17.6094 11.25 17.7875 11.25 18C11.25 18.2125 11.3219 18.3906 11.4656 18.5344C11.6094 18.6781 11.7875 18.75 12 18.75ZM11.25 16.5H12.75V11.25H11.25V16.5Z"/>
+            </svg>
+            <span class="elv-label elv-label--sm">Research spike — not yet reviewed</span>
+          </div>
+        </div>
+        <div class="notification__body">
+          <p class="elv-body elv-body--sm">
+            This page was produced by an AI agent (Claude) as a research spike — synthesized from the Confluence pages,
+            Jira tickets, and Slack channels listed under <a href="#sources">Sources</a> below. It has not been reviewed
+            or validated by the FSB Roster 1 group (Sam, Neil, Joana, Martin) or by Gabriela. Treat it as a first pass to
+            edit, correct, and argue with — not as an approved process. Anything that doesn't match how the group
+            actually works should be changed or cut.
+          </p>
         </div>
       </div>
-      <div class="notification__body">
-        <p class="elv-body elv-body--sm">
-          This page was produced by an AI agent (Claude) as a research spike — synthesized from the Confluence pages,
-          Jira tickets, and Slack channels listed under <a href="#sources">Sources</a> below. It has not been reviewed
-          or validated by the FSB Roster 1 group (Sam, Neil, Joana, Martin) or by Gabriela. Treat it as a first pass to
-          edit, correct, and argue with — not as an approved process. Anything that doesn't match how the group
-          actually works should be changed or cut.
-        </p>
+
+      <div class="elv-flex elv-items-center elv-gap-2">
+        <span class="elv-status-badge elv-status-badge--warning" elv>
+          <span class="elv-status-badge__label">Draft</span>
+        </span>
+        <span class="elv-text-sm elv-text-subtle">
+          Populated from a research spike across existing squad docs (Sep 30). Needs a pass from the group to confirm it matches actual practice, then flip to Live.
+        </span>
       </div>
     </div>
 
-    <!-- Status -->
-    <div class="elv-flex elv-items-center elv-gap-2 elv-mb-10">
-      <span class="elv-status-badge elv-status-badge--warning" elv>
-        <span class="elv-status-badge__label">Draft</span>
-      </span>
-      <span class="elv-text-sm elv-text-subtle">
-        Populated from a research spike across existing squad docs (Sep 30). Needs a pass from the group to confirm it matches actual practice, then flip to Live.
-      </span>
-    </div>
+    <!-- SECTION: WORKFLOW STEPS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">Workflow steps</h2>
+      <p class="elv-text-sm elv-text-subtle elv-max-w-2xl" style="margin-bottom:32px;">
+        Two patterns are running in parallel across the AEO/SEO squads. Neither is mandated — pick based on ticket size
+        and how much of the team needs to be involved.
+      </p>
 
-    <!-- Workflow Steps -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Workflow steps</h2>
-    <p class="elv-text-sm elv-text-subtle elv-mb-5">
-      Two patterns are running in parallel across the AEO/SEO squads. Neither is mandated — pick based on ticket size
-      and how much of the team needs to be involved.
-    </p>
+      <div class="pattern-grid" style="display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:32px;">
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__header">
+            <div class="elv-content-card__header-content">
+              <span class="elv-text-xs elv-font-semibold elv-text-nonessential elv-uppercase" style="letter-spacing:0.04em;">Pattern A</span>
+              <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:4px 0 3px;">Analyst/Dev agent spec workflow</h3>
+              <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); margin:0;">Bigger initiatives, new surface area</p>
+            </div>
+          </div>
+          <div class="elv-content-card__body" style="padding: 8px 24px 8px;">
 
-    <div class="elv-grid elv-grid-cols-1 elv-gap-4 elv-mb-8">
-      <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6">
-        <span class="elv-text-xs elv-font-semibold elv-text-nonessential elv-uppercase" style="letter-spacing: 0.04em;">Pattern A</span>
-        <h3 class="elv-text-base elv-font-bold elv-text-default elv-mt-1 elv-mb-3">Analyst/Dev agent spec workflow</h3>
-        <p class="elv-text-sm elv-text-subtle elv-mb-3">Bigger initiatives, new surface area.</p>
-        <ol class="elv-text-sm elv-text-default">
-          <li><strong>Team kickoff.</strong> Before splitting off, meet as a full team (Design, PM, Eng, SEO) to align on the problem, hypothesis, and target metric. ~1–2 days for a new epic, shorter for a well-scoped initiative.</li>
-          <li><strong>Draft the spec together.</strong> If a PRD/design spec already exists, start there. If not, use the <code>/analyst</code> agent as a team — feed it the problem, hypothesis, and metric; answer its clarifying questions together rather than solo.</li>
-          <li><strong>Review and correct the spec</strong> as a group before anyone builds anything — check for wrong assumptions, missing technical constraints, and open decisions.</li>
-          <li><strong>Turn the spec into Jira.</strong> With Atlassian MCP connected, have the agent create the epic and tickets directly from the agreed spec.</li>
-          <li><strong>Review the generated tickets</strong> for sequencing, dependencies, and where design input is actually required.</li>
-          <li><strong>Split the work.</strong> Pair up (one technical + one non-technical person per epic) or route individual tickets — decide as a team which are small enough for AgentFarm vs. which need a person driving Claude Code/local setup.</li>
-          <li><strong>Build, with pauses for human review</strong> — don't let an agent run an entire epic unattended.</li>
-        </ol>
-      </div>
+            <div class="step-row">
+              <div class="step-num">1</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Team kickoff</div>
+                <div class="elv-text-sm elv-text-subtle">Before splitting off, meet as a full team (Design, PM, Eng, SEO) to align on the problem, hypothesis, and target metric. ~1–2 days for a new epic, shorter for a well-scoped initiative.</div>
+              </div>
+            </div>
 
-      <div class="elv-bg-neutral-0 elv-border elv-border-light elv-rounded-md elv-p-6">
-        <span class="elv-text-xs elv-font-semibold elv-text-nonessential elv-uppercase" style="letter-spacing: 0.04em;">Pattern B</span>
-        <h3 class="elv-text-base elv-font-bold elv-text-default elv-mt-1 elv-mb-3">AgentFarm autopilot</h3>
-        <p class="elv-text-sm elv-text-subtle elv-mb-3">Small, well-defined tickets.</p>
-        <ol class="elv-text-sm elv-text-default">
-          <li>Ticket gets created and labeled in Jira (either by a person or by the <strong>Scrum Master Agent</strong> from a Slack thread — see Toolkit).</li>
-          <li>AgentFarm's Jira Autopilot pulls the ticket in automatically.</li>
-          <li>A PM agent fills in gaps in the ticket (breakdown, acceptance criteria) and hands off to an Engineer agent.</li>
-          <li>The Engineer agent implements, opens a PR, sets up a preview environment, checks CI, and addresses failing checks/feedback.</li>
-          <li>A human (design or eng) reviews the PR and QAs the preview before merge.</li>
-        </ol>
-      </div>
-    </div>
+            <div class="step-row">
+              <div class="step-num">2</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Draft the spec together</div>
+                <div class="elv-text-sm elv-text-subtle">If a PRD/design spec already exists, start there. If not, use the <span class="term-chip">/analyst</span> agent as a team — feed it the problem, hypothesis, and metric; answer its clarifying questions together rather than solo.</div>
+              </div>
+            </div>
 
-    <div class="elv-notification notification--info elv-mb-10" elv>
-      <div class="notification__header">
-        <div class="notification__title">
-          <span class="elv-label elv-label--sm">Rule of thumb from the retros</span>
+            <div class="step-row">
+              <div class="step-num">3</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Review &amp; correct the spec</div>
+                <div class="elv-text-sm elv-text-subtle">Do this as a group before anyone builds anything — check for wrong assumptions, missing technical constraints, and open decisions.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">4</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Turn the spec into Jira</div>
+                <div class="elv-text-sm elv-text-subtle">With Atlassian MCP connected, have the agent create the epic and tickets directly from the agreed spec.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">5</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Review the generated tickets</div>
+                <div class="elv-text-sm elv-text-subtle">Check for sequencing, dependencies, and where design input is actually required.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">6</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Split the work</div>
+                <div class="elv-text-sm elv-text-subtle">Pair up (one technical + one non-technical person per epic) or route individual tickets — decide as a team which are small enough for AgentFarm vs. which need a person driving Claude Code/local setup.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">7</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Build, with pauses for human review</div>
+                <div class="elv-text-sm elv-text-subtle">Don't let an agent run an entire epic unattended.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__header">
+            <div class="elv-content-card__header-content">
+              <span class="elv-text-xs elv-font-semibold elv-text-nonessential elv-uppercase" style="letter-spacing:0.04em;">Pattern B</span>
+              <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:4px 0 3px;">AgentFarm autopilot</h3>
+              <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); margin:0;">Small, well-defined tickets</p>
+            </div>
+          </div>
+          <div class="elv-content-card__body" style="padding: 8px 24px 8px;">
+
+            <div class="step-row">
+              <div class="step-num">1</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Ticket created &amp; labeled</div>
+                <div class="elv-text-sm elv-text-subtle">In Jira, either by a person or by the Scrum Master Agent from a Slack thread — see Toolkit.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">2</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">AgentFarm pulls it in</div>
+                <div class="elv-text-sm elv-text-subtle">Jira Autopilot picks up the labeled ticket automatically.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">3</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">PM agent fills the gaps</div>
+                <div class="elv-text-sm elv-text-subtle">Breakdown, acceptance criteria — then hands off to an Engineer agent.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">4</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Engineer agent implements</div>
+                <div class="elv-text-sm elv-text-subtle">Opens a PR, sets up a preview environment, checks CI, and addresses failing checks/feedback.</div>
+              </div>
+            </div>
+
+            <div class="step-row">
+              <div class="step-num">5</div>
+              <div>
+                <div class="elv-text-base elv-font-semibold elv-text-default">Human review &amp; QA</div>
+                <div class="elv-text-sm elv-text-subtle">A human (design or eng) reviews the PR and QAs the preview before merge.</div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-      <div class="notification__body">
-        <p class="elv-body elv-body--sm">
-          Front-load discovery in the planning week for small initiatives instead of letting it bleed into the sprint.
-          Ship true MVPs and iterate in production — full-stack builders pick up the small fixes/iterations afterward
-          rather than waiting for a "finished" first version.
+
+      <div class="tout-banner">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          <strong>Rule of thumb from the retros:</strong> front-load discovery in the planning week for small initiatives
+          instead of letting it bleed into the sprint. Ship true MVPs and iterate in production — full-stack builders
+          pick up the small fixes/iterations afterward rather than waiting for a "finished" first version.
         </p>
       </div>
-    </div>
+    </section>
 
-    <!-- Toolkit -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Toolkit</h2>
-    <div style="overflow-x: auto;" class="elv-mb-6">
-      <table class="elv-table">
-        <thead>
-          <tr>
-            <th>Tool</th>
-            <th>What it's for</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Full Stack Companion</strong><br><span class="elv-text-xs elv-text-nonessential">AgentFarm, Slack-tagged</span></td>
-            <td>Your bx-monorepo code assistant. Answers "why does this behave this way" questions grounded in actual code, runs AEO markdown QA against any Capterra/SA/GetApp URL and posts results to a Jira comment, and ships small fixes as a PR (shows the diff before opening it).</td>
-            <td>Tag it directly in Slack — no context switch needed.</td>
-          </tr>
-          <tr>
-            <td><strong>Scrum Master Agent</strong><br><span class="elv-text-xs elv-text-nonessential">AgentFarm</span></td>
-            <td>Turns a Slack message or thread into a well-formed Jira ticket (infers title, description, acceptance criteria); periodically scans the board for hygiene issues; gives release-impact analysis.</td>
-            <td>Also the mechanism behind last retro's "flag stuck tickets" commitment.</td>
-          </tr>
-          <tr>
-            <td><strong>Claude Code + Figma MCP</strong></td>
-            <td>Designer-driven component creation — hand off an exact Figma component node, get back a production-ready component (variants, states, Storybook stories, tests, design tokens) generated directly in the codebase.</td>
-            <td>The core of how design work is actually getting "full-stacked" — start here if you're new.</td>
-          </tr>
-          <tr>
-            <td><strong>SEO QA Structured-Data Agent</strong></td>
-            <td>Automated QA for AEO/SEO issues — flags AEO-markdown problems and SSR/CSR parity issues. ~67% QA time saved on Capterra tickets so far.</td>
-            <td>Scope is expanding to include UX QA, with the UX team owning fixes.</td>
-          </tr>
-          <tr>
-            <td><strong>Atlassian MCP</strong></td>
-            <td>Lets your coding agent read Confluence context and create Jira epics/tickets directly, instead of manual copy-paste.</td>
-            <td>Set this up before your first analyst-agent session — without it, agents can't see Confluence at all.</td>
-          </tr>
-          <tr>
-            <td><strong><code>/analyst</code> agent</strong></td>
-            <td>Drafts a PRD/spec from a problem + hypothesis, asking clarifying questions.</td>
-            <td>Shared from the team's agent repo — ask in-channel for the current link.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- SECTION: TOOLKIT -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Toolkit</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        The agents and connections the two patterns above actually run on.
+      </p>
 
-    <h3 class="elv-text-base elv-font-bold elv-text-default elv-mb-3">Getting set up</h3>
-    <ol class="elv-text-sm elv-text-default elv-mb-10">
-      <li>Choose your coding environment — Claude Code or OpenCode. Agents are separate per tool, so install/configure in whichever you use.</li>
-      <li>Install the shared team agents from the group's shared repo.</li>
-      <li>Connect Atlassian MCP so your agent can read Confluence and write to Jira.</li>
-      <li>Confirm you're working in the correct repo (e.g. <code>cd ~dev/ue</code>) before starting a session.</li>
-      <li>In Claude Code, run <code>claude</code>, then <code>Shift+Tab</code> to select <strong>Plan Mode</strong> before planning any work.</li>
-    </ol>
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 0;">
+          <table class="fileref">
+            <thead>
+              <tr>
+                <th style="width:18%;">Tool</th>
+                <th>What it's for</th>
+                <th style="width:26%;">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Full Stack Companion</strong><br><span class="elv-text-xs elv-text-nonessential">AgentFarm, Slack-tagged</span></td>
+                <td>Your bx-monorepo code assistant. Answers "why does this behave this way" questions grounded in actual code, runs AEO markdown QA against any Capterra/SA/GetApp URL and posts results to a Jira comment, and ships small fixes as a PR (shows the diff before opening it).</td>
+                <td>Tag it directly in Slack — no context switch needed.</td>
+              </tr>
+              <tr>
+                <td><strong>Scrum Master Agent</strong><br><span class="elv-text-xs elv-text-nonessential">AgentFarm</span></td>
+                <td>Turns a Slack message or thread into a well-formed Jira ticket (infers title, description, acceptance criteria); periodically scans the board for hygiene issues; gives release-impact analysis.</td>
+                <td>Also the mechanism behind last retro's "flag stuck tickets" commitment.</td>
+              </tr>
+              <tr>
+                <td><strong>Claude Code + Figma MCP</strong></td>
+                <td>Designer-driven component creation — hand off an exact Figma component node, get back a production-ready component (variants, states, Storybook stories, tests, design tokens) generated directly in the codebase.</td>
+                <td>The core of how design work is actually getting "full-stacked" — start here if you're new.</td>
+              </tr>
+              <tr>
+                <td><strong>SEO QA Structured-Data Agent</strong></td>
+                <td>Automated QA for AEO/SEO issues — flags AEO-markdown problems and SSR/CSR parity issues. ~67% QA time saved on Capterra tickets so far.</td>
+                <td>Scope is expanding to include UX QA, with the UX team owning fixes.</td>
+              </tr>
+              <tr>
+                <td><strong>Atlassian MCP</strong></td>
+                <td>Lets your coding agent read Confluence context and create Jira epics/tickets directly, instead of manual copy-paste.</td>
+                <td>Set this up before your first analyst-agent session — without it, agents can't see Confluence at all.</td>
+              </tr>
+              <tr>
+                <td><strong><span class="term-chip">/analyst</span> agent</strong></td>
+                <td>Drafts a PRD/spec from a problem + hypothesis, asking clarifying questions.</td>
+                <td>Shared from the team's agent repo — ask in-channel for the current link.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-    <!-- Blockers -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Known blockers &amp; guardrails</h2>
-    <p class="elv-text-sm elv-text-subtle elv-mb-5">
-      Pulled from squad retros and the cross-squad FSB learnings doc — read this before you hit the same wall.
-    </p>
-    <ul class="elv-text-sm elv-text-default elv-mb-10">
-      <li><strong>PR review is the real bottleneck, not writing code.</strong> One team saw merged PRs/month drop ~60% while PRs reviewed went up ~88% after FSB started — AI-authored PRs take more review rounds and more context to evaluate. Budget for this; don't expect agent-assisted speed to show up as faster <em>shipping</em> until review capacity catches up.</li>
-      <li><strong>Give dev agents explicit guardrails up front</strong> — e.g. always use existing Elevate components, keep PRs under ~15 files touched, don't reinvent existing functionality (give examples), follow Baymard best practices.</li>
-      <li><strong>Agents over-split tickets.</strong> Watch for AgentFarm splitting one ticket into several redundant sub-issues — catch this at splitting time (adversarial check or manual review) rather than after duplicate work has happened.</li>
-      <li><strong>Confluence isn't readable by agents without Atlassian MCP.</strong> Without it, you're stuck manually pasting PRD context. Set this up first.</li>
-      <li><strong>Local spec files get lost.</strong> Save generated <code>.md</code> specs to the relevant Confluence page, not just a local/hidden agent folder — the team needs a shared, durable home for artifacts.</li>
-      <li><strong>Staging/preview environments are unreliable or contended.</strong> Preview-label automation on PRs helps but isn't consistent yet; local setup works but is the slowest path and still throws environment errors for some people.</li>
-      <li><strong>Prototyping tool tradeoff:</strong> Claude (Design) produces stronger output but burns tokens fast; Figma Make has struggled to stay within the Elevate design system.</li>
-      <li><strong>FSB should be bidirectional.</strong> Most of the current investment is getting non-technical people shipping code — less has gone into getting technical people up to speed on product/design thinking, which risks PM (and design) becoming the bottleneck as everyone builds faster. Worth deliberately building this the other direction too (e.g. non-PM/non-designer team members drafting the first spec pass).</li>
-    </ul>
+      <h3 class="elv-text-lg elv-font-bold elv-text-default elv-mt-8 elv-mb-2">Getting set up</h3>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Five things to confirm before your first agent-assisted session.
+      </p>
 
-    <!-- AEO-native design principles -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">AEO-native design principles</h2>
-    <p class="elv-text-sm elv-text-subtle elv-mb-5">
-      Separate from tooling — this is what actually changes in the <em>design thinking</em>, not just the workflow.
-      From the <strong>Alternatives Pages — SEO and AEO Design Spec</strong> (worked example):
-    </p>
-    <ul class="elv-text-sm elv-text-default elv-mb-6">
-      <li><strong>If a bot can't see it in the raw HTML, it doesn't exist for AEO.</strong> No client-side-only reveals (filters, tabs, accordions) for anything that should be citable — must be server-rendered into the DOM.</li>
-      <li><strong>Every module should come from a database field or arithmetic on one</strong> — not a writer, not a model. Labels like "Best for X" should be rule-generated (walk an ordered list of rules, stop at the first that fires, consume the label so nothing repeats) rather than hand-written, so they scale and stay defensible.</li>
-      <li><strong>Print the sample size.</strong> "Best for healthcare" isn't citable; "4.6/5 from 34 healthcare reviewers" is.</li>
-      <li><strong>Data density over page length</strong> — a well-structured table beats a long page with zero tables.</li>
-      <li><strong>Provenance matters</strong> — a visible "data last updated / N verified reviews" line gives both buyers and AI engines a reason to trust the page.</li>
-    </ul>
-    <p class="elv-text-sm elv-text-subtle elv-mb-10">
-      This is a useful pattern to point new designers to when they ask "what's actually different about designing for AEO vs. designing normally?"
-    </p>
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 8px 24px 8px;">
 
-    <!-- Measurement -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Experimentation &amp; measurement practice</h2>
-    <p class="elv-text-sm elv-text-subtle elv-mb-10">
-      The <strong>Test Directory — CSAOA SEO/AEO Tests</strong> page is the squad's live ledger of every AEO/SEO test and
-      launch (hypothesis, ticket, status, and — once available — report/conclusion). It's updated automatically by an
-      <code>experiment-dashboard</code> skill when a dashboard or readout is published; anything run outside that
-      workflow gets added by hand. Worth pointing new FSB contributors here so they see what "test vs. skip" looks
-      like in practice and don't duplicate an already-answered question.
-    </p>
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Choose your coding environment</div>
+              <div class="elv-text-sm elv-text-subtle">Claude Code or OpenCode. Agents are separate per tool, so install/configure in whichever you use.</div>
+            </div>
+          </div>
 
-    <!-- First shipped changes -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">First shipped changes</h2>
-    <p class="elv-text-xs elv-text-nonessential elv-mb-3">To be filled in by the group — this research spike didn't have visibility into individual FSB commits/PRs.</p>
-    <div style="overflow-x: auto;" class="elv-mb-10">
-      <table class="elv-table">
-        <thead>
-          <tr>
-            <th>Person</th>
-            <th>Change</th>
-            <th>Date</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="4" class="elv-text-nonessential">No entries yet — add as FSB changes ship.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Install the shared agents</div>
+              <div class="elv-text-sm elv-text-subtle">Install the shared team agents from the group's shared repo.</div>
+            </div>
+          </div>
 
-    <!-- Other relevant practices -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Other relevant practices</h2>
-    <ul class="elv-text-sm elv-text-default elv-mb-10">
-      <li><strong>FSB is a company-wide push, not squad-local.</strong> Product R&amp;D runs dedicated Full Stack Builder days each Sync Week, with regional Captains (CHI: Austin Bedell, BAR: Tomas Caraccia, BLR: Jishin Chillayil &amp; Aravind Raj T, GGN: Ashish Verma) — worth connecting with the Captain network rather than reinventing onboarding material that already exists elsewhere.</li>
-      <li><strong>Cross-brand consistency:</strong> the same FSB pattern (Full Stack Companion + Scrum Master Agent via AgentFarm) is being stood up per squad — check whether G2's squad has an equivalent AgentFarm page before building a CSAOA-only one from scratch.</li>
-    </ul>
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Connect Atlassian MCP</div>
+              <div class="elv-text-sm elv-text-subtle">So your agent can read Confluence and write to Jira.</div>
+            </div>
+          </div>
 
-    <!-- Contributors -->
-    <h2 class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Contributors</h2>
-    <p class="elv-text-sm elv-text-default elv-mb-10">Sam Childs (mentor), Neil Kawde, Joana Balague Casado, Martin Leturia</p>
+          <div class="step-row">
+            <div class="step-num">4</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Confirm your repo</div>
+              <div class="elv-text-sm elv-text-subtle">Make sure you're working in the correct repo (e.g. <span class="term-chip">cd ~dev/ue</span>) before starting a session.</div>
+            </div>
+          </div>
 
-    <!-- Sources -->
-    <h2 id="sources" class="elv-text-lg elv-font-bold elv-text-default elv-mb-2">Sources</h2>
-    <p class="elv-text-xs elv-text-nonessential elv-mb-3">All accessed 2026-09-30.</p>
-    <ul class="source-list elv-text-sm elv-mb-4" style="list-style: none; padding-left: 0;">
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6946095128/AEO+SEO+AI-Assisted+Workflow+FSB" target="_blank" rel="noopener">AEO/SEO AI-Assisted Workflow (FSB)</a> — the existing stub this page fills in</li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/pbe/pages/6851952662/Full-Stack+Building+Learnings+Blockers+Challenges" target="_blank" rel="noopener">Full-Stack Building: Learnings, Blockers &amp; Challenges</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6890258450/AgentFarm+Agents+CSAOA" target="_blank" rel="noopener">AgentFarm Agents — CSAOA</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6790972134/Capterra+Software+Advice+Organic+AEO+SEO+Sprint+5+August+17+-+September+18" target="_blank" rel="noopener">Capterra + Software Advice Organic (AEO+SEO) Sprint 5: Aug 17 – Sep 18</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6951010309/Capterra+Software+Advice+Organic+AEO+SEO+Sprint+6+September+28+-+November+6" target="_blank" rel="noopener">Capterra + Software Advice Organic (AEO+SEO) Sprint 6: Sep 28 – Nov 6</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6407716877/FY27+Unified+Product+Squads" target="_blank" rel="noopener">FY27 Unified Product Squads</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6791692311/Alternatives+Pages+SEO+and+AEO+Design+Spec" target="_blank" rel="noopener">Alternatives Pages — SEO and AEO Design Spec</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6768853061/Test+Directory+CSAOA+SEO+AEO+Tests" target="_blank" rel="noopener">Test Directory — CSAOA SEO/AEO Tests</a></li>
-      <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6875217930/Product+R+D+September+Sync+Week+Full+Stack+Builder+Goals+and+Activities" target="_blank" rel="noopener">Product R&amp;D September Sync Week: Full Stack Builder Goals and Activities</a></li>
-    </ul>
+          <div class="step-row">
+            <div class="step-num">5</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Start in Plan Mode</div>
+              <div class="elv-text-sm elv-text-subtle">In Claude Code, run <span class="term-chip">claude</span>, then <span class="term-chip">Shift+Tab</span> to select Plan Mode before planning any work.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: BLOCKERS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Known blockers &amp; guardrails</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Pulled from squad retros and the cross-squad FSB learnings doc — read this before you hit the same wall.
+      </p>
+
+      <div class="elv-accordion" data-accordion>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="true" aria-controls="b-bottleneck">
+            <span>PR review is the real bottleneck, not writing code</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-bottleneck" aria-hidden="false" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                One team saw merged PRs/month drop ~60% while PRs reviewed went up ~88% after FSB started — AI-authored
+                PRs take more review rounds and more context to evaluate. Budget for this; don't expect agent-assisted
+                speed to show up as faster <em>shipping</em> until review capacity catches up.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-guardrails">
+            <span>Give dev agents explicit guardrails up front</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-guardrails" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                E.g. always use existing Elevate components, keep PRs under ~15 files touched, don't reinvent existing
+                functionality (give examples), follow Baymard best practices.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-oversplit">
+            <span>Agents over-split tickets</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-oversplit" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Watch for AgentFarm splitting one ticket into several redundant sub-issues — catch this at splitting
+                time (adversarial check or manual review) rather than after duplicate work has happened.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-confluence">
+            <span>Confluence isn't readable without Atlassian MCP</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-confluence" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Without it, you're stuck manually pasting PRD context. Set this up first.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-specfiles">
+            <span>Local spec files get lost</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-specfiles" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Save generated <span class="term-chip">.md</span> specs to the relevant Confluence page, not just a
+                local/hidden agent folder — the team needs a shared, durable home for artifacts.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-preview">
+            <span>Staging/preview environments are unreliable</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-preview" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Or contended. Preview-label automation on PRs helps but isn't consistent yet; local setup works but is
+                the slowest path and still throws environment errors for some people.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-tradeoff">
+            <span>Prototyping tool tradeoff</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-tradeoff" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Claude (Design) produces stronger output but burns tokens fast; Figma Make has struggled to stay within
+                the Elevate design system.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="b-bidirectional">
+            <span>FSB should be bidirectional</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="b-bidirectional" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Most of the current investment is getting non-technical people shipping code — less has gone into
+                getting technical people up to speed on product/design thinking, which risks PM (and design) becoming
+                the bottleneck as everyone builds faster. Worth deliberately building this the other direction too
+                (e.g. non-PM/non-designer team members drafting the first spec pass).
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: AEO-NATIVE DESIGN PRINCIPLES -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">AEO-native design principles</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Separate from tooling — this is what actually changes in the <em>design thinking</em>, not just the workflow.
+        From the <strong>Alternatives Pages — SEO and AEO Design Spec</strong> (worked example):
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body">
+          <ul class="elv-text-sm elv-text-default" style="margin:0; padding-left:1.1rem;">
+            <li><strong>If a bot can't see it in the raw HTML, it doesn't exist for AEO.</strong> No client-side-only reveals (filters, tabs, accordions) for anything that should be citable — must be server-rendered into the DOM.</li>
+            <li><strong>Every module should come from a database field or arithmetic on one</strong> — not a writer, not a model. Labels like "Best for X" should be rule-generated (walk an ordered list of rules, stop at the first that fires, consume the label so nothing repeats) rather than hand-written, so they scale and stay defensible.</li>
+            <li><strong>Print the sample size.</strong> "Best for healthcare" isn't citable; "4.6/5 from 34 healthcare reviewers" is.</li>
+            <li><strong>Data density over page length</strong> — a well-structured table beats a long page with zero tables.</li>
+            <li><strong>Provenance matters</strong> — a visible "data last updated / N verified reviews" line gives both buyers and AI engines a reason to trust the page.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="elv-text-sm elv-text-subtle elv-mt-4 elv-max-w-2xl">
+        This is a useful pattern to point new designers to when they ask "what's actually different about designing for AEO vs. designing normally?"
+      </p>
+    </section>
+
+    <!-- SECTION: MEASUREMENT -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Experimentation &amp; measurement practice</h2>
+      <div class="tout-banner">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          The <strong>Test Directory — CSAOA SEO/AEO Tests</strong> page is the squad's live ledger of every AEO/SEO test
+          and launch (hypothesis, ticket, status, and — once available — report/conclusion). It's updated automatically
+          by an <span class="term-chip" style="background:#ffffff;">experiment-dashboard</span> skill when a dashboard or
+          readout is published; anything run outside that workflow gets added by hand. Worth pointing new FSB
+          contributors here so they see what "test vs. skip" looks like in practice and don't duplicate an
+          already-answered question.
+        </p>
+        <a href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6768853061/Test+Directory+CSAOA+SEO+AEO+Tests" target="_blank" rel="noopener" class="btn btn--secondary btn--sm tout-banner__cta">Open directory →</a>
+      </div>
+    </section>
+
+    <!-- SECTION: FIRST SHIPPED CHANGES -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">First shipped changes</h2>
+      <p class="elv-text-xs elv-text-nonessential elv-mb-5 elv-max-w-2xl">To be filled in by the group — this research spike didn't have visibility into individual FSB commits/PRs.</p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 0;">
+          <table class="fileref">
+            <thead>
+              <tr>
+                <th style="width:18%;">Person</th>
+                <th>Change</th>
+                <th style="width:14%;">Date</th>
+                <th style="width:26%;">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4" class="elv-text-nonessential">No entries yet — add as FSB changes ship.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: OTHER RELEVANT PRACTICES -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Other relevant practices</h2>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body">
+          <ul class="elv-text-sm elv-text-default" style="margin:0; padding-left:1.1rem;">
+            <li><strong>FSB is a company-wide push, not squad-local.</strong> Product R&amp;D runs dedicated Full Stack Builder days each Sync Week, with regional Captains (CHI: Austin Bedell, BAR: Tomas Caraccia, BLR: Jishin Chillayil &amp; Aravind Raj T, GGN: Ashish Verma) — worth connecting with the Captain network rather than reinventing onboarding material that already exists elsewhere.</li>
+            <li><strong>Cross-brand consistency:</strong> the same FSB pattern (Full Stack Companion + Scrum Master Agent via AgentFarm) is being stood up per squad — check whether G2's squad has an equivalent AgentFarm page before building a CSAOA-only one from scratch.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: CONTRIBUTORS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Contributors</h2>
+      <p class="elv-text-sm elv-text-default elv-max-w-2xl">Sam Childs (mentor), Neil Kawde, Joana Balague Casado, Martin Leturia</p>
+    </section>
+
+    <!-- SECTION: SOURCES -->
+    <section id="sources">
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Sources</h2>
+      <p class="elv-text-xs elv-text-nonessential elv-mb-3 elv-max-w-2xl">All accessed 2026-09-30.</p>
+      <ul class="source-list elv-text-sm" style="list-style: none; padding-left: 0;">
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6946095128/AEO+SEO+AI-Assisted+Workflow+FSB" target="_blank" rel="noopener">AEO/SEO AI-Assisted Workflow (FSB)</a> — the existing stub this page fills in</li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/pbe/pages/6851952662/Full-Stack+Building+Learnings+Blockers+Challenges" target="_blank" rel="noopener">Full-Stack Building: Learnings, Blockers &amp; Challenges</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6890258450/AgentFarm+Agents+CSAOA" target="_blank" rel="noopener">AgentFarm Agents — CSAOA</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6790972134/Capterra+Software+Advice+Organic+AEO+SEO+Sprint+5+August+17+-+September+18" target="_blank" rel="noopener">Capterra + Software Advice Organic (AEO+SEO) Sprint 5: Aug 17 – Sep 18</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6951010309/Capterra+Software+Advice+Organic+AEO+SEO+Sprint+6+September+28+-+November+6" target="_blank" rel="noopener">Capterra + Software Advice Organic (AEO+SEO) Sprint 6: Sep 28 – Nov 6</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6407716877/FY27+Unified+Product+Squads" target="_blank" rel="noopener">FY27 Unified Product Squads</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6791692311/Alternatives+Pages+SEO+and+AEO+Design+Spec" target="_blank" rel="noopener">Alternatives Pages — SEO and AEO Design Spec</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/CSAOA/pages/6768853061/Test+Directory+CSAOA+SEO+AEO+Tests" target="_blank" rel="noopener">Test Directory — CSAOA SEO/AEO Tests</a></li>
+        <li><a class="elv-text-link elv-underline" href="https://g2crowd.atlassian.net/wiki/spaces/PRD/pages/6875217930/Product+R+D+September+Sync+Week+Full+Stack+Builder+Goals+and+Activities" target="_blank" rel="noopener">Product R&amp;D September Sync Week: Full Stack Builder Goals and Activities</a></li>
+      </ul>
+    </section>
 
     <!-- Footer -->
-    <footer class="elv-mt-16 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+    <footer class="elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
       <a href="../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to AEO/SEO epic</a>
     </footer>
 
   </div>
 
 </div>
+
+<!-- Accordion behavior -->
+<script>
+(function() {
+  const accordions = document.querySelectorAll('[data-accordion]');
+  accordions.forEach(accordion => {
+    const headers = accordion.querySelectorAll('.elv-accordion__header');
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        const contentId = header.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
