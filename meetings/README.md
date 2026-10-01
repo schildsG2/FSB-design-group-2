@@ -24,3 +24,4 @@ Use `/log-meeting` to add a new one. See `.claude/log-meeting.skill` for the ful
 
 ### Changelog
 - **2026-10-01** — Initial version. Notes-first layout, collapsed transcript accordion, owner-grouped next steps, row-list pattern borrowed from Chicago Labs' Research section.
+- **2026-10-01** — Added an optional "Relevant links" section (e.g. a FigJam board), placed between Summary and the transcript accordion — rendered only when at least one `--link` is passed, so pages without links don't show an empty section. Also fixed the Summary parser pulling in Zoom's trailing `**Attendees:**` footer line as part of the last topic's paragraph.

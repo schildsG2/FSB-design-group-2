@@ -14,6 +14,7 @@ Usage:
         --assets-json /path/to/saved-get_meeting_assets-output.json \\
         --attendees "Sam Childs, Joana Balagué Casadó, Martin Leturia, Neil" \\
         [--hook "short dash-phrase for the index row"] \\
+        [--link "FigJam board|https://figma.com/board/..."] \\
         [--out meetings/2026-10-08-fsb-design-group-2-weekly.html]
 
 The assets JSON is whatever `get_meeting_assets(meetingId=<uuid>)` returned
@@ -93,6 +94,11 @@ def parse_summary_markdown(md: str):
                 summary_items.append((heading, " ".join(para).strip()))
             heading, para = m3.group(1).strip(), []
             continue
+        if line.strip() == "---":
+            # Zoom appends a trailing "---" + "**Attendees:** ..." footer after the
+            # last topic; stop collecting here rather than folding it into that
+            # topic's paragraph. Attendees are already passed in via --attendees.
+            break
         if line.strip():
             para.append(line.strip())
     if heading is not None:
@@ -129,6 +135,25 @@ def render_summary(summary_items) -> str:
         f'          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">{esc(para)}</p>\n'
         f'        </div>'
         for heading, para in summary_items
+    )
+
+
+def render_links(links) -> str:
+    """links is a list of (label, url) tuples. Returns the full <section>, or '' if there are none."""
+    if not links:
+        return ""
+    rows = "\n".join(
+        f'        <a class="link-row" href="{esc(url)}" target="_blank" rel="noopener">\n'
+        f'          <svg class="link-row__icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 11.5L15 5M15 5H10M15 5V10M15 9.5V14.5C15 14.9 14.85 15.25 14.56 15.56C14.25 15.85 13.9 16 13.5 16H5.5C5.08 16 4.73 15.85 4.44 15.56C4.15 15.27 4 14.92 4 14.5V6.5C4 6.08 4.15 5.73 4.44 5.44C4.73 5.15 5.08 5 5.5 5H10.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>\n'
+        f'          <span class="link-row__label">{esc(label)}</span>\n'
+        f'        </a>'
+        for label, url in links
+    )
+    return (
+        "\n    <section>\n"
+        '      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">Relevant links</h2>\n'
+        f"{rows}\n"
+        "    </section>\n"
     )
 
 
@@ -186,6 +211,14 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
     .transcript-speaker {{ flex: 0 0 170px; font-weight: 600; color: var(--text-default); }}
     .transcript-text {{ flex: 1 1 auto; color: var(--text-subtle); }}
     @media (max-width: 640px) {{ .transcript-speaker {{ flex: 0 0 110px; }} }}
+
+    .link-row {{
+      display: flex; align-items: center; gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid var(--border-light); text-decoration: none;
+    }}
+    .link-row:last-child {{ border-bottom: none; }}
+    .link-row__icon {{ flex: 0 0 16px; color: var(--text-nonessential, #9b9aa1); }}
+    .link-row__label {{ font-size: 14px; font-weight: 600; color: var(--text-primary, #4c3fb4); }}
   </style>
 </head>
 <body>
@@ -230,7 +263,7 @@ PAGE_TEMPLATE = '''<!DOCTYPE html>
       <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:20px;">Summary</h2>
 {summary_html}
     </section>
-
+{links_section}
     <section>
       <div class="elv-accordion" data-accordion>
         <div class="elv-accordion__item">
@@ -302,7 +335,16 @@ def main():
     ap.add_argument("--out", default="", help="Output path; defaults to meetings/<date>-<topic-slug>.html")
     ap.add_argument("--start", default="", help="Actual meeting start, ISO8601 (from the Zoom `search` result's meeting_start_time — more accurate than the scheduled start_time in the assets JSON). Defaults to the assets JSON's start_time.")
     ap.add_argument("--end", default="", help="Actual meeting end, ISO8601 (from the Zoom `search` result's meeting_end_time). Defaults to the assets JSON's end_time.")
+    ap.add_argument("--link", action="append", default=[], metavar="LABEL|URL",
+                     help="A relevant link to show in a 'Relevant links' section (e.g. a FigJam board). Repeatable.")
     args = ap.parse_args()
+
+    links = []
+    for raw in args.link:
+        if "|" not in raw:
+            sys.exit(f"--link must be in the form 'LABEL|URL', got: {raw!r}")
+        label, url = raw.split("|", 1)
+        links.append((label.strip(), url.strip()))
 
     data = json.loads(Path(args.assets_json).read_text())
     topic = data["topic"]
@@ -340,6 +382,7 @@ def main():
         quick_recap=esc(quick_recap),
         next_steps_html=render_next_steps(next_steps),
         summary_html=render_summary(summary_items),
+        links_section=render_links(links),
         transcript_count=len(transcript_items),
         transcript_html=render_transcript(transcript_items),
     )
@@ -365,6 +408,7 @@ def main():
     print(f"Next steps groups: {[o for o, _ in next_steps]}", file=sys.stderr)
     print(f"Summary headings: {[h for h, _ in summary_items]}", file=sys.stderr)
     print(f"Transcript rows: {len(transcript_items)}", file=sys.stderr)
+    print(f"Relevant links: {[label for label, _ in links]}", file=sys.stderr)
     print("", file=sys.stderr)
     print("Paste this row into index.html's #meetingGrid (and bump the Meetings count):", file=sys.stderr)
     print(row)
