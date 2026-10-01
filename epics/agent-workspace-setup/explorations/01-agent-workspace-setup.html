@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Workspace Setup</title>
+
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/tokens/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/components/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/utilities.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/icons/icons.css">
+
+  <style>
+    body { margin: 0; background: var(--bg-neutral-5); }
+    html { scroll-behavior: smooth; }
+
+    code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    pre.codeblock {
+      background: #17151d;
+      color: #e7e4f0;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    pre.codeblock .c { color: #8b8698; }
+
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-neutral-10, #f2f2f3);
+      color: var(--text-default);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1 1 140px;
+      background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      min-width: 140px;
+      display: flex;
+      flex-direction: column;
+    }
+    .flow-step-resource {
+      margin-top: auto;
+      padding-top: 12px;
+    }
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-nonessential, #6f6d78);
+      font-size: 20px;
+      flex: 0 0 auto;
+      padding: 0 2px;
+    }
+    @media (max-width: 720px) {
+      .flow-row { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    }
+
+    .step-row {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .step-row:last-child { border-bottom: none; }
+    .step-num {
+      flex: 0 0 32px;
+      height: 32px;
+      width: 32px;
+      border-radius: var(--radius-full);
+      background: #f2f0f9;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    table.fileref { width: 100%; border-collapse: collapse; }
+    table.fileref th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      background: #fafafa;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    table.fileref td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      color: var(--text-default);
+      vertical-align: top;
+    }
+    table.fileref tr:last-child td { border-bottom: none; }
+
+    .elv-accordion__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      text-align: left;
+    }
+    .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .elv-accordion__item:last-child { border-bottom: none; }
+    .elv-accordion__content[aria-hidden="true"] { display: none; }
+    .elv-accordion__content[aria-hidden="false"] { display: block; }
+    .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
+    .elv-accordion__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 150ms ease;
+    }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    /* Tout banner — compact inline callout with icon + text + CTA */
+    .tout-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ebe9f6;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+    }
+    .tout-banner__icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #ffffff;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tout-banner__text {
+      flex: 1 1 auto;
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #342a6a;
+      min-width: 200px;
+    }
+    .tout-banner__cta {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      .tout-banner { flex-wrap: wrap; }
+    }
+
+    /* Amber "caution" variant of the content card eyebrow */
+    .caution-card {
+      border-left: 3px solid #b45309;
+    }
+  </style>
+</head>
+<body>
+
+<div elv class="elv-bg-neutral-5 elv-min-h-screen">
+
+  <!-- Header -->
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list" style="display:inline-flex; align-items:center; gap:2px;">
+          <li style="display:flex; align-items:center; gap:2px;">
+            <a href="../../../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">FSB Design Group 2</a>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
+          </li>
+          <li>
+            <span style="color:#84838a; font-size:12px;" aria-current="page">Agent Workspace Setup</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
+        Agent Workspace Setup
+      </h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">
+        The files an agent reads before you type anything — personal preferences, a repo's own
+        instructions, and how they stack — for early-level builders on design/dev crossover projects
+        like this one.
+      </p>
+    </div>
+  </header>
+
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3" style="display:flex; flex-direction:column; gap:96px;">
+
+    <!-- SECTION 1: THE CORE IDEA -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">The core idea</h2>
+      <p class="elv-text-sm elv-text-subtle elv-max-w-2xl" style="margin-bottom:32px;">
+        Most of what shapes an agent's behavior isn't typed into the chat — it's loaded in from files,
+        layered from broad to specific. Each layer can narrow what the one above it says, but none of
+        them can override what a repo's own committed instructions say.
+      </p>
+
+      <div class="flow-row" style="margin-bottom:32px;">
+        <div class="flow-step" style="background:#f2f0f9; border-color:#ddd7f3;">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">1. Org policy</div>
+          <div class="elv-text-sm elv-text-subtle">Security, privacy, and company-wide norms. Rarely read directly in a session — it's what the layers below exist to honor.</div>
+          <div class="flow-step-resource"><span class="term-chip" style="background:#ffffff;">Confluence</span></div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">2. Repo's own instructions</div>
+          <div class="elv-text-sm elv-text-subtle">Committed to the codebase itself. Project conventions and policy — always wins if something conflicts.</div>
+          <div class="flow-step-resource"><span class="term-chip">CLAUDE.md / AGENTS.md</span></div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">3. Your personal layer</div>
+          <div class="elv-text-sm elv-text-subtle">A config file on your own machine. Preferences and checklists you want every repo to already know — not committed anywhere.</div>
+          <div class="flow-step-resource"><span class="term-chip">~/CLAUDE.md</span></div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#f2f0f9; border-color:#ddd7f3;">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">4. This session</div>
+          <div class="elv-text-sm elv-text-subtle">What the agent actually does — all three layers above, plus whatever you type next.</div>
+          <div class="flow-step-resource"><span class="term-chip" style="background:#ffffff;">Active session</span></div>
+        </div>
+      </div>
+
+      <div class="tout-banner" style="margin-top:40px;">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          <strong>A repo's own instructions always win.</strong> Your personal layer should narrow the gap
+          between "what this repo says" and "how I like to work" — never contradict it outright. When they
+          genuinely disagree, that's a sign the personal layer needs updating, not the other way around.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: WHERE EACH LAYER LIVES -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Where each layer lives</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Two kinds of files, each with a personal and a project version. Knowing which is which tells you
+        where to actually make a change.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 0;">
+          <table class="fileref">
+            <tr>
+              <th style="width:26%;">File / folder</th>
+              <th>What it does</th>
+            </tr>
+            <tr>
+              <td><span class="term-chip">~/CLAUDE.md</span> <span class="elv-text-xs elv-text-nonessential">(personal)</span></td>
+              <td>Lives on your own machine, outside any repo. Preferences you want every agent, in every project, to already know — not reviewed by anyone but you.</td>
+            </tr>
+            <tr>
+              <td><span class="term-chip">CLAUDE.md</span> / <span class="term-chip">AGENTS.md</span> <span class="elv-text-xs elv-text-nonessential">(project)</span></td>
+              <td>Committed to the repo itself. Project conventions and policy, visible to and binding on anyone who clones it — arrives through the same review process as code.</td>
+            </tr>
+            <tr>
+              <td><span class="term-chip">skills</span> <span class="elv-text-xs elv-text-nonessential">(personal)</span></td>
+              <td>Packaged workflows kept alongside your personal config. Yours alone — nothing in any repo depends on them existing.</td>
+            </tr>
+            <tr>
+              <td><span class="term-chip">.claude/skills/</span> <span class="elv-text-xs elv-text-nonessential">(project)</span></td>
+              <td>Packaged inside the repo itself — this repo's own <span class="term-chip">new-epic</span> and <span class="term-chip">new-exploration</span> skills, or the <span class="term-chip">g2-server</span> skill from Local Environment Setup. Available to anyone working in that repo.</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="elv-content-card elv-content-card--bordered elv-mt-4" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 16px 20px;">
+          <p class="elv-text-sm elv-text-default" style="margin:0;">
+            The personal/project split isn't about which file is "more important" — it's about who it's
+            reviewed by. A repo's own instructions go through the same PR process as its code; your
+            personal layer usually goes through no one. That asymmetry is exactly why personal
+            preferences move into a shared repo file deliberately, never automatically.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WHEN IT GOES WRONG -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">When it goes wrong</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        The most common failure isn't a missing file — it's a layer writing into the wrong one.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered caution-card" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 18px 22px;">
+          <p class="elv-text-xs elv-font-bold elv-mb-2" style="letter-spacing:0.04em; text-transform:uppercase; color:#b45309;">A cautionary case</p>
+          <p class="elv-text-sm elv-text-default" style="margin:0 0 12px;">
+            An agent working across both layers once wrote personal preference content directly into a
+            repo's shared instruction file — as if one person's private checklist were team policy. It
+            looked harmless, just more text in a file already full of text, but it meant a personal
+            working style now read as binding on everyone who cloned the repo.
+          </p>
+          <p class="elv-text-sm elv-text-default" style="margin:0;">
+            <strong>The fix:</strong> pull the personal content back out into its own layer, and keep the
+            repo's instruction file policy-only — scoped to what's actually true for everyone, not what
+            one person prefers. If something learned on the job really is durable and repo-specific, it
+            belongs in that repo's own instructions, proposed through the normal review process — not
+            injected directly by an agent mid-session.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: WORTH KNOWING ABOUT -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Worth knowing about</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Two things that make the layering above mostly automatic once they're set up.
+      </p>
+
+      <div class="elv-grid elv-grid-cols-1 elv-gap-4" style="grid-template-columns: 1fr; display:grid;">
+        <style>
+          @media (min-width: 750px) {
+            .worth-grid { grid-template-columns: 1fr 1fr !important; }
+          }
+        </style>
+        <div class="worth-grid" style="display:grid; grid-template-columns:1fr; gap:16px;">
+          <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+            <div class="elv-content-card__header">
+              <div class="elv-content-card__header-content">
+                <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:8px 0 3px;">Packaged skills</h3>
+                <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); text-transform:uppercase; letter-spacing:0.03em; margin:0;">Teach it once, reuse it forever</p>
+              </div>
+            </div>
+            <div class="elv-content-card__body">
+              <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+                A skill applies the same personal/project split to a whole workflow, not just a preference.
+                The <span class="term-chip">g2-server</span> skill from Local Environment Setup is one
+                example: the setup sequence and its failure modes, written once and handed to an agent by
+                name instead of re-explained every session.
+              </p>
+            </div>
+          </div>
+          <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+            <div class="elv-content-card__header">
+              <div class="elv-content-card__header-content">
+                <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:8px 0 3px;">Checking before you ask</h3>
+                <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); text-transform:uppercase; letter-spacing:0.03em; margin:0;">Five seconds that save a generic answer</p>
+              </div>
+            </div>
+            <div class="elv-content-card__body">
+              <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+                Before asking an agent to change something in an unfamiliar repo, check whether it already
+                has its own instruction file — covered in Version Control &amp; Agents Primer's
+                "Hidden files" section. If one exists, your agent is already reading it; if not,
+                <span class="term-chip">/init</span> is the fastest way to create a starting point.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: TERMS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Terms worth knowing</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        You don't need to memorize these — but recognizing them will make an unfamiliar repo's setup far
+        less mysterious on day one.
+      </p>
+
+      <div class="elv-accordion" data-accordion>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="true" aria-controls="t-claudemd">
+            <span><span class="term-chip">CLAUDE.md / AGENTS.md</span> &nbsp; The file an agent reads automatically</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-claudemd" aria-hidden="false" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Loaded into context before you type a single prompt. A personal copy lives on your own
+                machine; a project copy lives committed inside the repo — both get read, but only the
+                project copy is visible to anyone else who clones it.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like a component library's usage notes — read before anyone touches the file, so edits match what's already there.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-skill">
+            <span><span class="term-chip">skill</span> &nbsp; A packaged, named workflow</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-skill" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A set of steps written once and invoked by name, instead of re-explained in every session.
+                Can live in your personal config or committed inside a repo — see Where each layer lives, above.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like a saved plugin command — write the steps once, run it by name forever after.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-dotfile">
+            <span><span class="term-chip">dotfile</span> &nbsp; Why these files start with a dot</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-dotfile" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A leading dot (<span class="term-chip">.claude/</span>, <span class="term-chip">.gitignore</span>)
+                hides a file from a normal directory listing. Hidden from view, not from the agent — it
+                reads these before anything else.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like a layer marked "do not export" — present, doing real work, just hidden from the default view.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-scope">
+            <span><span class="term-chip">scope</span> &nbsp; Whose preferences a file actually encodes</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-scope" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Personal scope (your machine) vs. project scope (committed to the repo). Same file type,
+                different authority — personal scope is a suggestion to yourself; project scope is policy
+                for the team.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like your own plugin settings vs. a shared library's style guide — one is yours alone, the other is the team's.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-hierarchy">
+            <span><span class="term-chip">instruction hierarchy</span> &nbsp; Which file wins when two disagree</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-hierarchy" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Org policy, then a repo's own committed instructions, then your personal layer. Project
+                scope always wins over personal scope — covered in The core idea, above.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like brand guidelines overriding a personal style preference — the shared standard wins when they conflict.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tout-banner elv-mt-4">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          Claude Code's own docs on memory cover the full personal/project file hierarchy in more depth
+          than fits here, including how multiple files combine in one session.
+        </p>
+        <a href="https://docs.claude.com/en/docs/claude-code/memory" target="_blank" rel="noopener" class="btn btn--secondary btn--sm tout-banner__cta">Read the docs →</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="elv-mt-4 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+      <a href="../../../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
+    </footer>
+
+  </div>
+
+</div>
+
+<!-- Accordion behavior -->
+<script>
+(function() {
+  const accordions = document.querySelectorAll('[data-accordion]');
+  accordions.forEach(accordion => {
+    const headers = accordion.querySelectorAll('.elv-accordion__header');
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        const contentId = header.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
