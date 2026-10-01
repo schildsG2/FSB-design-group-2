@@ -1,0 +1,35 @@
+index.html
+  s_f43ab0660574a0::t_9119b9d28b15fa 60,63
+  s_7dbcee52cbf491::t_88438b6c08592f 332-359,362
+  s_f43ab0660574a0::t_bcd6bebb82ec0d 124
+  s_f43ab0660574a0::t_8c4a23fc17e4fe 163-197
+  s_f43ab0660574a0::t_5d1e097eb0031a 6
+meetings/README.md
+  s_7dbcee52cbf491::t_c0604e0391724e 1-13
+meetings/2026-10-01-fsb-design-group-2-weekly.html
+  s_7dbcee52cbf491::t_4a55042ad6e193 1-2062
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a9da92631eb7d4825afa8556104077c09d5afae4",
+  "prompts": {},
+  "sessions": {
+    "s_7dbcee52cbf491": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1bc69322-125b-4b1c-b716-526b5c037467",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Sam Childs <schilds@g2.com>"
+    },
+    "s_f43ab0660574a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "accf4419-00bd-450e-8f36-c24102d8deb9",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Sam Childs <schilds@g2.com>"
+    }
+  }
+}
