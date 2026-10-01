@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FSB Design Group 2 (Weekly) — Oct 1, 2026</title>
+
+  <link rel="stylesheet" href="../shared/elevate-prototyping-kit/tokens/elevate.css">
+  <link rel="stylesheet" href="../shared/elevate-prototyping-kit/components/elevate.css">
+  <link rel="stylesheet" href="../shared/elevate-prototyping-kit/utilities.css">
+  <link rel="stylesheet" href="../shared/elevate-prototyping-kit/icons/icons.css">
+
+  <style>
+    body { margin: 0; background: var(--bg-neutral-5); }
+
+    .elv-accordion__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      text-align: left;
+    }
+    .elv-accordion__content[aria-hidden="true"] { display: none; }
+    .elv-accordion__content[aria-hidden="false"] { display: block; }
+    .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
+    .elv-accordion__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 150ms ease;
+    }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    .transcript-scroll {
+      max-height: 520px;
+      overflow-y: auto;
+      background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+    .transcript-line {
+      display: flex;
+      gap: 10px;
+      padding: 5px 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .transcript-time {
+      flex: 0 0 48px;
+      color: var(--text-nonessential, #9b9aa1);
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      padding-top: 1px;
+    }
+    .transcript-speaker {
+      flex: 0 0 170px;
+      font-weight: 600;
+      color: var(--text-default);
+    }
+    .transcript-text {
+      flex: 1 1 auto;
+      color: var(--text-subtle);
+    }
+    @media (max-width: 640px) {
+      .transcript-speaker { flex: 0 0 110px; }
+    }
+  </style>
+</head>
+<body>
+
+<div elv class="elv-bg-neutral-5 elv-min-h-screen">
+
+  <!-- Header -->
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list" style="display:inline-flex; align-items:center; gap:2px;">
+          <li style="display:flex; align-items:center; gap:2px;">
+            <a href="../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">FSB Design Group 2</a>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
+          </li>
+          <li>
+            <span style="color:#84838a; font-size:12px;" aria-current="page">Meetings</span>
+          </li>
+        </ol>
+      </nav>
+      <div class="elv-inline-flex elv-items-center elv-gap-2 elv-px-3 elv-py-1 elv-rounded-full elv-mb-3" style="background: #eef2ff;">
+        <span class="elv-text-xs elv-font-bold elv-uppercase elv-tracking-wide" style="color: #4F46E5;">
+          Weekly Sync
+        </span>
+      </div>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
+        FSB Design Group 2 (Weekly)
+      </h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">
+        Thursday, October 1, 2026 · 1:14–2:05 PM UTC · Sam Childs, Joana Balagué Casadó, Martin Leturia, Neil
+      </p>
+      <p class="elv-text-xs elv-text-nonessential elv-mt-3">
+        <a href="https://docs.zoom.us/doc/hqGf5S98SxSJoHw4b8iO2w" target="_blank" rel="noopener" class="elv-text-nonessential hover:elv-text-primary">Source: Zoom Docs (AI Companion) →</a>
+      </p>
+    </div>
+  </header>
+
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3" style="display:flex; flex-direction:column; gap:64px; max-width: 820px;">
+
+    <!-- Quick recap -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">Quick recap</h2>
+      <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">This was the first meeting of a new AI-powered product building group led by Sam (05-06), where team members discussed their goals and learning priorities for working with AI tools like Claude Code and Codex. The group, which includes Joana, Martin, and Neil, shared their key objectives including shipping their first code changes, leveraging AI for design system execution, improving QA processes, and understanding when to use different LLM models effectively. Sam explained his workflow using Claude Code for code mechanics and OpenCode for server management, while emphasizing the importance of understanding GitHub processes and the value of Figma in an AI-driven workflow. The team discussed technical setup needs, with Joana and Martin needing to install Codex, and Sam offered to help with the setup process. The conversation ended with an agreement to continue these discussions in future Thursday sessions, focusing on practical implementation and troubleshooting.</p>
+    </section>
+
+    <!-- Next steps -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:20px;">Next steps</h2>
+        <div style="margin-bottom:20px;">
+          <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-2">05-06</div>
+          <ul style="margin:0; padding-left:18px;">
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Share the curated workspace (Chicago Labs exploration space) with the group and expand it as a communal space for notes and lesson structures. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e9036d6-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Set up a dedicated session to cover setup and workflow for AI tools (Claude Code, Codex, OpenCode, etc.) for the group. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e903b68-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Assist Joana and Martin with the setup of Claude Code/Codex, either asynchronously or in a separate meeting. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e90411c-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Pick up and start using Codex again for collaboration with the group. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e9042c0-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Communicate asynchronously with Joana regarding the setup of OpenCode or other recommended tools. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e90445a-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+          </ul>
+        </div>
+        <div style="margin-bottom:20px;">
+          <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-2">Joana</div>
+          <ul style="margin:0; padding-left:18px;">
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Attempt to set up Claude Code and/or Codex, and communicate asynchronously with 05-06 for help with permissions or setup issues. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e903d7a-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+          </ul>
+        </div>
+        <div style="margin-bottom:20px;">
+          <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-2">Martin</div>
+          <ul style="margin:0; padding-left:18px;">
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">Attempt to set up Codex and ensure the setup is correct, communicating with 05-06 if needed. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e903f64-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+          </ul>
+        </div>
+        <div style="margin-bottom:20px;">
+          <div class="elv-text-sm elv-font-bold elv-text-default elv-mb-2">Collaboration</div>
+          <ul style="margin:0; padding-left:18px;">
+            <li class="elv-text-sm elv-text-subtle elv-mb-1">The Group (Joana, Martin, Neil, 05-06): Use the FigJam board to continue adding and prioritizing learning objectives asynchronously. <a href="https://tasks.zoom.us?meetingId=cgQ%2Bzrt7R7ujh0f%2FlwgHkg%3D%3D&amp;stepId=2e9045f4-bda1-11f1-92cf-fe67d4f577dc" target="_blank" rel="noopener" class="elv-text-xs" style="color:var(--text-primary, #4c3fb4);">view task →</a></li>
+          </ul>
+        </div>
+    </section>
+
+    <!-- Summary -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:20px;">Summary</h2>
+        <div style="margin-bottom:24px;">
+          <div class="elv-text-base elv-font-bold elv-text-default elv-mb-2">Product-Building Mentorship Session Expectations</div>
+          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">The meeting began with casual conversation about weather in Chicago and Barcelona before transitioning to the main purpose of setting expectations for a product-building mentorship session. The facilitator explained that while there isn't a structured curriculum, the goal is to create a collaborative learning space where curiosity is celebrated and judgment is minimized. They mentioned starting a curated reference space for the group to share and learn from, emphasizing the opportunity to be part of a creative product-building vanguard.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div class="elv-text-base elv-font-bold elv-text-default elv-mb-2">Adapting to New Tools and Processes</div>
+          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">Martin and Joana discussed the challenges of adapting to new tools and processes, emphasizing the value of learning together in a small group setting. They highlighted the importance of asking questions and sharing experiences to overcome blocks and improve efficiency. The group agreed to support each other in addressing fundamental questions and exploring different approaches to achieve the same outcomes.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div class="elv-text-base elv-font-bold elv-text-default elv-mb-2">Figma Research Template Demonstration</div>
+          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">The speaker demonstrated a personal exploration space they created in Figma to organize research assets and design concepts, which they have turned into a template that can be customized for different squads. They proposed using this space to structure thoughts and develop better lesson structures, suggesting it could potentially be a collaborative tool for the group. The speaker planned to share the FigJam board link in the chat for the group to contribute their ideas and questions about the project.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div class="elv-text-base elv-font-bold elv-text-default elv-mb-2">Collaborative Learning Space Planning</div>
+          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">The team discussed establishing a collaborative learning space where members can share what they want to learn, with the main goal of shipping their first code change. They reviewed a FigJam file where ideas could be documented, including topics like setting up agent spaces and business aspects. The group agreed to focus on identifying current processes that could be improved with AI and potential new areas to explore, with the understanding that this was an informal, gestural starting point for their curriculum planning.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div class="elv-text-base elv-font-bold elv-text-default elv-mb-2">AI Implementation Guidelines Discussion</div>
+          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">Neil shared four key points about implementing AI projects, including the need for better prompt practices when using Gemini instead of Claude, guidelines for PR length and code review processes, potential designer code review capabilities, and challenges with design system implementation where some elements from Figma weren't properly translated to the final product.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <div class="elv-text-base elv-font-bold elv-text-default elv-mb-2">AI Tools and Workflows Discussion</div>
+          <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">The team held a session to discuss AI tools and workflows, with participants sharing their questions and experiences. Martin raised questions about building technical knowledge, working with different AI models, and optimizing token usage, while Joana focused on PR processes and best practices for using tools like Codex and Claude. The group discussed various AI tools including Claude Code, OpenCode, and Codex, with 05-06 sharing his workflow preferences and tool stack. The team agreed to follow up on tool setup and permissions in future meetings, particularly for Joana and Martin to get proper access to Codex. --- **Attendees:** Neil, Martin Leturia, Joana Balagué Casadó, 05-06 - Prairie Shores</p>
+        </div>
+    </section>
+
+    <!-- Transcript (click-through) -->
+    <section>
+      <div class="elv-accordion" data-accordion>
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-transcript">
+            <span>Full transcript (366 lines)</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-transcript" aria-hidden="true" role="region">
+            <div class="elv-accordion__body">
+              <div class="transcript-scroll">
+              <div class="transcript-line">
+                <span class="transcript-time">0:18</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Hello.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:19</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Hello!</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:21</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Apologies for this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:22</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Ay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:24</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Hello.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:25</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">No lo hice.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:26</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Crazy day out here in Chicago. It's the kind of day to, uh…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:27</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Ya.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:29</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Una zoom.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:30</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">uh, turn an umbrella inside out, and get people slipping in the streets. So, not myself, on the… on the second one, fortunately, but… here we are. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:36</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Guau!</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:41</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Regaining composure, running around steps.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:45</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">How y'all doing?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:48</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Good.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:48</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Curt.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:49</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Be Training Hir: To.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:50</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah? What kind of rain?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:53</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Una. No, no to Heavy. Barcelona es bien. The Galers, Tuft Show.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">0:58</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Hmm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:00</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:00</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah. Mira.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:01</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Ya David andres.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:02</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">What kind of alerts? Like inclement weather reports? Like bad, bad stuff coming in or? Oh, okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:08</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Well…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:09</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah, entonces igual por las.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:14</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Así. Messi, Like, con So.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:19</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Ya.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:19</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah, that'll do it. Sheesh. Um, is that, uh, what's, what's the classic thing, classic thing to be paired with that for you? Like for, um, out by us, like Chicago is like largely swamp. Um, so just flooding everywhere in terms of like when that, when that gets to be an issue, uh, what's it look like for.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:38</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Mhm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:39</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">No Jet Like, Ba la Front november and Worlds.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:45</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Y en octubre, 5.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:46</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yep.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:47</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Ya Front November to March is the Heavy. Ya Heavy season.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:47</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Fair.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:48</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Ya.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:48</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:52</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Sheesh.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:54</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">1:55</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, far up. Well, hope everybody stays safe.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:00</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I saw that Neil was also going to be late, um, so I'm not sure what point his stand-up runs. If his stand-ups are anything like mine, sometimes they just go for an extra, like, half hour or something, because people had some thoughts and feelings and concepts they want to unpack, just…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:00</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Ya.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:00</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Ya.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:14</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Very valid, very valid.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:17</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay. So, uh…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:20</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">considering where to start, then. I was hoping for Neil to be here in the beginning, but that's okay, because I'm late, so be careful. Um, the, uh, thing to begin with…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:29</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, my, my goal with this session, uh, for at least this very first one is basically just like level set, um, us to understand like where we're coming from, um, us to highlight very importantly, what we want to learn, um, us to look at this as how, um, like, like Gabby has already given us like, like a quick list of items that we could say, like, this is like, kind of like what we're aspiring for in this space.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">2:49</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And then basically use that to figure out where we're trying to build towards and how I can best help you. Something that I think is probably worth the nature of all of these lessons.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">3:06</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Uh, inherently, like, I don't… I don't have a book or a curriculum that I'm reading off of. Like, you would say, like, I was… I guess you could say I was part of the… the first generation of product builders for.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">3:17</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And when that started, I was basically just, like, given, like, a cool set of tools and a funny-shaped cliff to kind of climb up. And then, like, we figured out, like, now in this, like, mountain-based metaphor, just G2 loves those, is basically, like, now we are trying to, like, track the path together now that I've, in theory, plotted out more points than the people around me.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">3:26</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Ya.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">3:37</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Who have supported me on all their points. We're trying to, to help. That doesn't mean that we have like a big book of known truths, but we still have like stuff that we can do to help each other. Um, and to that point, um, that's in, in one way to say that like, there isn't, there isn't a structured curriculum. So that's like, oh.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">3:53</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, that I would say, personally, that could, that could feel frustrating. It's like, well, like, heck, you're asking me to do so many new things. Why can't you just, like, give me, like, a, like, a clear lesson plan in a book and, like, tell me how to do this and that. But the other side of that is, is that, um, like, we are, like, kind of, so to speak, like, like, scouting this all out. We are in a unique position from a, like, a role perspective.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">4:15</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">kind of looking great going into this. Like, we are in an opportunity to be able to look like we are in this kind of, like, creative product-building vanguard that's going to, like, kind of, like, change the shape of the triangle, almost, as we're working on this. That's exciting. Um, it can be a little nerve-wracking, be a little exciting.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">4:30</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and because of that, um, I think that it's very important for, um, like, curiosity to be, uh, celebrated here, and, like, the space of, like, this is, like, literally a curated space for us to, like, go, I don't know.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">4:46</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">help me, please. Like, that's, like, very important to me. Like, one of the things we're walking away from this is, like, this is ideally as little judgment as possible, just us trying to figure out what we want to learn, and then how we can learn it, and then us sometimes learning it together, or us sharing what we know to other people.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">5:00</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">5:01</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">So that's, to me, an important aside for all of this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">5:07</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Something else that I think will be valuable for us that I'm trying to do my part, since I've been tasked with being mentor of this space, I'm trying to have some sort of like curated space for us to be able to refer to. I already started that very lightly.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">5:22</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, it could be that we expand that to be… it is a inherently communal space in the sense of that you can also make contributions to it. That's my goal, is the end of this, but I also didn't come in here to say, like, I made a repo, and now we're all contributing to it. Um, it's just to say that, like, I started a space for us to have.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">5:39</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, so I can point to that in a moment, uh, but I wanted to, um, pause for, for thoughts and questions, or like, hey Sam, what abouts, and that, that kind of concept.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">5:52</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah, I mean, from my side, no, it's crazy to see how everything changed in one year. No, it's like there's, everything's new in front of us. It's not like you have, yeah, Figma and you know what to expect each time you have a new project.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:07</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Now I have to do something and I don't know like what screen I will see or like how the, you know, like codex UI will look when I like it's everything's new. So until we do take these first steps.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:21</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Um, we're still like.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:24</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">with expectation like how this will be. I think, yeah, once we take these first steps, everything will be easier.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:33</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">But yeah, as you mentioned, it's like learning together. And I guess if we go together, we'll get farther and faster.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:43</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah, excited to have this one group here to…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:46</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Be open with questions, concerns, problems. Also, like, this moment to be, like, hands-on to…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">6:53</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">like, um, get rid of blocks, you know, like, if I'm blocked on a Monday, well, I can park that, because I know that on Thursday, or, like, in this meeting, I can ask and just unblock and continue with the, with the project, so, no, it's, it's good to have this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:08</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">this meeting.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:09</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">in a small group.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:10</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">That'd be great.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:11</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">So yeah, those are my thoughts.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:12</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Well said. Thank you for sharing. And then if you are blocked on a Monday, you can reach out to the group and maybe we'll be able to resolve it on a Tuesday, too. Y.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:17</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Of course.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:19</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Sure.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:21</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah, I agree with Martin, especially because sometimes I feel like there are, like, as you said, like, things that, for me, like, that's really basic, so I'm afraid to ask, or I feel like, you know, I don't know who to reach, so it's good to have this small group, because sometimes with, you know, like, a bigger group, sometimes it's more difficult to.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">7:40</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Talk about some things. Yeah, but I think that we can all leverage, especially for my side. I think my main concern is like there are like some things that I don't know how to leverage them or like the proper flow, you know? So I think here we can also maybe share. I'm doing that. Is that okay? You know, because sometimes I feel like I don't know if this is the proper way to do that or is there a better way? I don't know.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:04</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">So maybe here, like, we can all share also, like, what works or what doesn't work for us, so we can learn from this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:10</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Love that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:11</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">So I think it's going to be a good way for us to speed up a little bit on that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:17</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I'm glad. I'm hoping so too. Yeah, like this, absolutely every fundamental we don't talk about, we can. And then there are like every, it is the sworn duty of every person in this group to like try to kindly answer as many questions as you can with each other in this space.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and then something else that I think is, um, it's half…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:40</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">daunting, but also half inspiring of this is that, like, um, throughout this, we're gonna talk about, like, like, I'll show, like, my way of doing things, but something I think is, like, really cool about what we're doing is that, like, um, we're entering a time where there are so many ways to accomplish, like, even the same output.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">8:56</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">That it's like, I don't know, it's jarred me. Like I worked with Jim, one of our engineers who moved to US from Greece seven years ago, but sometimes he just like has an easier time articulating concepts in Greek. And so he will have like, it's almost like Star Trek universal translator style where he'll just like request for things to be done and he'll use Greek and that will like be naturally translated into.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">9:22</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">English like down the line and then of course codes like there's kind of like we're in this strange like you sit in front of like like a Rosetta Stone that allows you to change your design taste into to a degree engineering taste like request for other space. I'm saying that's that's crazy.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">9:37</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">9:37</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And one more note off of that, that I think that you will be pleasantly surprised by, my opinion, is that a lot of what you'll learn in terms of prompt engineering, you'll find will naturally skew into the voice you would use that you've already been like refining while like critiques.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">9:53</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">and feedback and stuff like that. Like, you can look at something, and as long as you can point to it and say, like, this is the thing I'm talking about, these are my feelings and thoughts around it, you'll be able to have that land very likely with the agent across this space. So, like, it sounds silly to say, because one thing that frustrated me a lot about, like, the AI ways of working for stuff is that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">10:13</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, people, I would say, Oh, I was thinking about doing blah, blah, blah. And they would be like, well, did you just try asking it yet? Um, we're just like, like, take that's the agent. And like, that's, that's true to a big effect. But at the same time, like I didn't come here to tell you to like, go talk to a bot. You know, I.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">10:22</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah. Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">10:30</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, but something that I think is… you'll find yourself being surprised by is how much you can just naturally articulate or ask for things across stuff. Um, but that's… that's not what we're here to do necessarily, too, so. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">10:40</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Hmm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">10:42</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Cool, okay. I mentioned that space. I could briefly show it. We don't need to go like a big rundown through it. And by very nature of this, I haven't populated it that much. This is just for me to show like a mostly blank space. But I started this. This is me.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">10:59</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">um, leveraging my… I have a Chicago Labs exploration space that I put together, which I think I mentioned this in the past, but this, um, brief tangent was me exploring this notion of… I keep on making miscellaneous, like, assets through research spikes, or through, like, design concepts where we would.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">11:19</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">um, basically, like, wants to, like, have some sort of space to iterate from, and it's basically me trying to figure out, like, well, I keep on working in Figma, and I keep on being prompted to do this full-stack builder concept, um, and I would inevitably, like, do iterations within code from Claude Code.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">11:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, but I would make a thing, and then it would sit on my computer, and it would, like, not have a home, and it wouldn't have a consistent system, and so what I ended up doing was I just, like, built a big bucket to put all of my things, and then I also bound them to a design system, our design system eventually, and once it was ported, um, over properly.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">11:54</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and, uh, like, that's, like, the space that I established for my own work for squad work, and when I did that, I, um, turned it into a template and turned it into an install script so that with agents, you could basically tell it your squad name and things you care about, and it would build you a similar space.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">12:11</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I just did that again for this. And this is just for me to have like, like periodically I'm going to be taking notes off of things like example, when I was getting started off of this, I was curious about.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">12:24</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">They're like, like, is there like a website I could go to and figure out like, hey, this is like a like designer, like from designers to designers, like way to teach this general concept. And I use that to get like a quick run of like the competitive landscape off of this. And when I did that, I wanted to be able to have it and hold it for other things and be able to correlate it with stuff. So I just like had it build it there.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">12:44</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, so we don't need to go, like, line item by line item off of this, but, like, I guess this is just to say that, um, I started this for me, uh, to be able to organize my thoughts with this group and try, like, put together better, um, lesson structures, um, and this could eventually be something that we all collectively contribute to.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">13:01</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">if we wanted to, but I didn't… I didn't come here to say, this is what we're all doing, this is me saying, hey, I'm trying to make sure my thoughts are coherent, so I built a little whiteboard for myself.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">13:11</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, so we can get into that in a moment, um, but something else that I think would be, um, maybe more valuable off of this is that actually, go to FigJam, Figma, um.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">13:23</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And then I think that what we could do is have just like a quick idea dump off of, um, what we're hoping to get out of this. Grounding it with probably the, um, we got, had the benefit of specific what we're aiming for off of this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">13:39</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I'm going to copy and paste this, put it into a fig jam and share it out with us. And then we're going to take like, I think like three to five minutes just to like quickly throw post notes on this board and say like, here's something that I want to know at the end of this. And then we could all throw them all together too so we could see that. So I'm gonna drop this in here.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:00</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I'll share this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:03</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Da-da-da-da-da.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:06</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And then… Martine…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:09</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">There you go.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:13</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Oh, that was… oh, no, good. Yes, okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay. Um, then I'll share the link in the chat, because that's probably easier for you as well.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:25</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yes. Sorry, Sam. You sent me the in the gardener one.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:30</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Oh!</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:30</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Not the attitude.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:30</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Mmhm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:31</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Thank you. Thank you, Jeronimo.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:32</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">As in now.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:34</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">The, yeah, this one.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:35</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yes, got it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:37</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">My apologies. There you are. Okay, um, so you should be able to edit. Um… I'll copy link…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:44</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Stop sharing screen.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:46</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And I think I see both in there already. No, okay, Joanna, you're not in there yet. So you're…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:49</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yep.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">14:52</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Slack, too. Sometimes ZoomChat is strangely, like, um, obtuse to be able to get to.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:02</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Too many features.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:02</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Agreed.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:05</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Here we go.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:07</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:09</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Thanks.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:09</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Mm-hmm, of course.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:11</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay, um, so now I'm going to set aside… this is just, like, um, this is not an exhaustive curriculum, this is just, like, us, like, quickly throwing ideas and things that we want to learn, um, on there. I'm gonna say, uh, 3 minutes, and then if we find that lacking, we can expand that more, but it's just, like, a real.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:27</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">jotting of thoughts. Like I said, this is like super gestural and I haven't started the timer yet. The the idea is that what we're aiming for 1st ship code change to me. That's pretty objective. I already naturally have like a like. That's a very natural lesson plan for me off of that. And that's like a pretty clear item. We could talk about what that specifically is applied to. But that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">15:47</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, to me, this is the one that I have the most curiosity about in terms of, like, what you would expect to get out of it for this, um, and it doesn't need to be restricted to this, but I saw this one, um, given your AEO, SEO overlap, I want to make sure that I would come at this from the posture of understanding.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:03</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">what you're naturally trying to do anyway. Oh, wonderful. Okay, cool. I'll reframe this in a second.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:08</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">And he'll…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:10</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Hey, Neil. Welcome.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:14</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:15</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">Nada.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, I just, let me, I can share this with you now too. Um, so getting you caught up, I just had a real quick, like, like lay of the land and setting of terms in terms of just like, um, establishing, uh, what we're here to do and how we're coming at this from the sense of that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, we are trying to establish a, an open space where we can all ask questions and learn whatever we can and, uh, make sure that we can understand what we want to learn so we can like empower that for each other. Um, there's a really big speed run version of it. Um, but I just shared a link to a fig jam file.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">16:49</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and we… we haven't started writing anything in there yet, so it's actually great timing. Um, this is a super informal, just like a quick throwing of post-it notes onto a board of saying that knowing what we're aiming for, what are we trying to get out of this specifically? So it's kind of like an opportunity for anybody to say, oh, I want to learn about.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">17:08</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Like, like setting up an agent space. I want to learn about like business and that. And like, we're naturally going to have items on the curriculum, but this is just like an easy opportunity for us to be able to frame priority items that we all want to learn together. And so with that in mind, Gabby gave us the like what we're aiming for.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">17:25</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, oh, I just shared this, because I think you just got an invite, uh, through the, uh, Gmail, I'd imagine, too, and I can send a link to you directly. It's probably just faster. Uh… big jam link.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">17:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">There you go. So Gabby shared this, what we're aiming for, quick list, which I'll read for the group, just like to…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">17:45</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">get even expectations across the board for people. Um, what we're aiming for, first shift code change. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">17:52</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">give a small, real contribution that actually ships, like, basically blowing a PR up. Um, and then, given your AEO, SEO overlap, use this group to rethink how design works here specifically. Um, so something that I think might be an easy opportunity is identify, um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:07</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">things that we currently do, and how we can have us do that with AI, but then also, like, things that we might expand to. That can be its own open-ended something. Um, and then the third one is anything you feel relevant. So, like, this was, like, AgentFarm was a shot at… I don't have a great deal of experience with AgentFarm, but that's a great example.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:24</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, so, like, anything that comes off the top of your head, too. Um, I was going to do 3 minutes, and then if we feel like we need more time, we can easily make that 5 minutes. Um, but I was, uh, just trying to have, like, a real quick gestural, um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">let's figure out what we want, kind of thing. Does anybody have any clarifying questions, or comments, um, or, like, requests? Like, Sam, slow down, stop talking. Sorry, I came here, like, sprinting from the commute, so I'm trying.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:47</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Wind it back down.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:49</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">But any other questions?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:50</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">I have the three minutes.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:51</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:52</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Three, you are good? Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:54</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">No. It's fine. Yeah. Three, five.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:54</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:55</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah, two, five, yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:55</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:57</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay, I'm gonna start the timer. Here we go.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">18:58</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Nice.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">19:00</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Cool.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:06</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:08</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">That's 3 minutes. Um, do we have enough we're comfortable with sharing with, or would you like another 2 minutes to keep drafting ideas?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:16</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">I'm none.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:19</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">I'm good.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:19</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:21</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">All right, uh, let's throw our post-it notes in the same general area. Um, we didn't go too far, that's great. Um, and now I think we can just kind of go round robin.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:31</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I feel like I've been talking a whole bunch. I don't necessarily want to go first, but I can. Do we have any volunteers who would like to share their thoughts first?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:43</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">I can go first.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:44</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Thank you, Neil.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:47</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">Uh, so the first one is the…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:50</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">the best prompt practices of how to we implement some a project.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">22:57</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">So in case… so basically, my process before the AI usage budget and all, when that came… before that, I was just using Claude for all my prompts.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:08</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">And that prompt, I used to feed it to Claude Code, and with that, I used to start with the execution of any of the projects.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:14</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">But after the AI usage and all came in.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:17</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">I started with using Gemini more for making up prompts.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:23</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">To feed to the cloud code.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:25</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">And later on… but even though I used to do that, there were a lot of things which got missed out. Because, as you know, I was working with Cloud Code, and Cloud Code already had the… most of the context of what I was working for.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:39</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">But Gemini didn't have that much.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:40</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Hmm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:41</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">So yeah, that's the first point. And so if there is a big project.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:47</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">which we are working on, and there has to be, like, some part of execution regarding it. Uh, so example, if…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">23:54</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">uh, there's a very big project, and we have to, like, divide it into some basic PRs, or divide it into small units, so that even, uh, whoever is reviewing those PRs.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:05</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">It will be easy for them.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:07</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">So how much can be the length of a PR of lines of code?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:13</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">And… the second was…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:15</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">And the third one was that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:18</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">Uh, can the designers as well contribute to reviewing the codes of other designers?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:24</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">If we can do that. Because till now, we haven't, uh, started to do that. And the engineers have been setting up some kinds of…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:33</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">agents to review those codes, right? So even… I was thinking if we have some kind of agent to review our own code, or some other designer's code, that would be helpful.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:44</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">And, uh, the last one was the design system execution. So, uh, the last design, uh, the design which I was implementing was the choose if cards for the compare page.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">24:54</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">So with that it gave me the all the design tokens, the elements which I was using in figma with the I use the figma Mcp. But there was some kinds of.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">25:07</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">design, uh, elements which were not getting implemented, so I had to, like, manually check it out, and it'll do that. So, yeah, these four were mine.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">25:18</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Got it. All very valid. Thank you for sharing. And that last one, design system execution, that's basically how might we have Elevate code be real, like Elevate system leveraging? Got it. Thank you.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">25:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay, would like to go next.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">25:37</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">I can go next.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">25:39</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">My first question is basically, like, how can we get enough technical knowledge, like, not only to work with code.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">25:48</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">but also to improve the outputs and not be like learning in each of the steps that we are iterating with the AIs, different AIs, and also to better connect with devs and like speed up the relationship.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:01</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">and make it smoother.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:04</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Um, then I guess this is the building block for…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:09</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">for the future. And well, the second one is, I want to learn more about your experience with Agent Farm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:14</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">I haven't seen you're super excited with it, so I wanna I'll learn learn more about it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:20</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Then. Yeah, like when we're discussing something or creating something with any Llm. Like, how do we know, or how should we know.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:32</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">when is the moment to create a skill, or create an agent, or create a set of agents to work in a project? Like, what's the…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:43</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">bar there, like…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:45</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Well, I guess this is based on experience. Not like once. You have done 3 big projects. You will learn that you have my like. You may have to. Leave it to an agent, for example. But if there's any clear guidance on this, that would be nice.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">26:59</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Then the next one. Well, how to combine Llms. To leverage their potential and also optimize token usage. Basically, I've heard like. Neil was asking, or. Talking about. I just stick my for this, I mean for that. So. Maybe if there's any.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">27:15</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">guideline for us to also, like, start in a good point there, like, use Cloud for these three things, then Codex for this, Gemini for this, and then from that point, maybe you can mix, match, and everything. But maybe to learn.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">27:29</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">What are the best points or the strongest, the strengths of each LLMs?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">27:35</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">And then the last two points are related to the AEO SEO squad or like our impact in the squad.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">27:43</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">27:44</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">One of my intentions in this quarter is to update the…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">27:49</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">design system in the Capterra site, because we're using 2, almost 3 different design systems like you can find 3 different design systems in the in the site.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:01</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">So, yeah, my objective is to…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:04</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">unify everything, so I think that's… that would be my main, yeah, goal, apart from the small tasks that I can do with…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:12</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Uh, within different initiatives. And the last one is one…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:16</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">proposal that we are discussing next week already with devs, uh, how can we leverage, um, well, our abilities to… to code with AI.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:24</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">to make the design QA, to avoid going back and forth after they develop something.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:30</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">And directly, like.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:32</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">us having the ownership to just fix it. Like, we see 3 things that are wrong, we just fix them, and they only have to peer the code, not the design again.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:43</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">So yeah, these are some of the things that came up to my mind.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:47</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Excellent.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:48</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">More probably coming.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:49</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah, oh yeah, this is now where the list has to end for everybody at all. Yeah, thank you. Thank you for sharing. That last one, I found, oh, I'm sorry, I found personal catharsis with the QA part is one of those things, like I always feel kind of bad when I'm just making these bulleted lists and sending them to people or sitting down and like walking through stuff.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:53</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">28:56</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Sure.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:07</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">very satisfying to be able to actually make your own, um, um, changes. That's, like, this… we're entering, like, an era of design empowerment for that, which is nice. Um, yeah, sorry, Joana, what were you saying?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:15</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yep.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:16</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Totally.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:18</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">I don't know. I was just saying that I'm going to go next. I thought Martin was…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:24</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">That's all right.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:26</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Nothing.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:27</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yes, well, I agree with all of that. Sorry, Nayla and Martin said that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:34</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">The ones that I have added, this is like the super simple and the most simple thing, but because I have done some PRs, but all the PRs I have been doing, it's like with a design system that I'm working on. That's a good project regarding Fullstack Builder, but it's true that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">29:51</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">I haven't done any PR, like changing something that is already in production, which it's simple, but yeah, I would like to do some, start with a small thing, but then like with a bigger thing, like a whole section or a whole page, because I understand how to change it like in one template, but how is the flow of, okay, I'm going to do this change in production that it will affect all the templates for all the products.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">30:14</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">that use data, I don't know, like, how do I do that? So, like, we can do, like, a big change to see how it works.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">30:21</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Then the second point is what Martin said regarding the QA. We have the meeting next week, but I think this is going to be also really helpful for the developers. And then the third point, yeah, something that has also been said a little bit, like to be more efficient in terms of using.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">30:37</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">plot because, I mean, sometimes I don't know how, when I can create a skill. Also, like, in my case, when I have to do, like, work on something, I tend to create a chat, like a coworker chat every time.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">30:54</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">I don't really use, like, project, but I think that maybe it makes more sense to have, like, I don't know, project for profile, project for category, project for compare, or no. You know, like, in terms of this, I don't know which is the best flow, uh, so maybe also.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">31:10</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah, leveraging that a little bit to see if it's more efficient.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">31:14</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Um, and then also, yeah, Codex and Claude, because, uh, we haven't, at least Martine and I, we haven't used Codex either, so to know which works best for something else, so maybe we can start using Codex instead of Claude, so it's also something that we'd like to discuss here.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">31:32</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Um, and then the other thing, it's more like best practices in general, that if someone has something that works, uh, really well for them, so just… that we can use the chat, like, Slack to share recommendations, tips, or anything.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">31:46</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">in general. And yeah, that's some of the things that came to my mind today.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">31:51</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Excellent. Thank you. Very grounded. Um, I appreciate that. Uh, okay. I will share mine. Um, I just kind of threw through a bunch of high-level concepts out there for things that I'm hoping to cover. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">32:04</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">So, uh, this is one that I'm personally trying to get better at, is when to use which model. I'll often just hit, like, Sonic 5 a whole lot, or, like, like, whatever's, like, whatever's, like, top of the stack for Claude. Um, it's very, very.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">32:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">If I were really out my game, I'd be changing it down to, like, a cheaper model for, like, miscellaneous changes, like, a higher model for a plan, and a cheaper model for, like, implementation, or, like, those, like, little touch-ups that I do, because I always have, like, a bunch of piecemeal touch-ups. Um, so, like, that's one thing that, for me, trying to improve, and I think that in doing.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">32:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Different tools, yeah, Clover's Codex. There's so many ways to accomplish things, and finding out which ones fit our use cases best. With an underlying point off of that is that I think that we'll find there's a lot of overlap between tools, and it will, after a certain point, come to like a little bit of a personal preference in there, because you can do many things with one, you can do many things with the other.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">32:58</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Sometimes it's a circle in terms of a Venn diagram. Um, turning prototypes into code. This is something that's been talked about a bunch. Um, and when I say that, I mean, like, um, I found that I will iterate, actually, I'm putting these next to each other. Um, I, I will iterate, um, within a, like, like a rough.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">33:15</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">HTML or something, just like a little, like, basically a sketch in AI, and that is a lot faster than having it work within, like, UE, for example, because UE is clunky as all get-out. Like, it just takes a lot of hard work for any AI in person to work within there quickly and meaningfully, so I, like, sketch over here.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">33:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">But then there's that point where you have to bring it over there. Um, so what that looks like. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">33:38</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">how and when to keep figma relevant in an AI driven workspace. In my opinion, figma still has a lot of like validity as a tool. And I think it's very helpful with us as designers that, like you, you have honed skills working to figma. Y'all are good with figma.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">33:54</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, that means that, like, when it comes to, like, quickly showing an idea, yes, you can have AI, like, make a thing, but, like, still the ability to, like, tune that thing in Figma and to pass the ball back and forth between Figma and Claude Code, to me, is still very valuable and very noteworthily. Um, I personally really like it for state visualization and commenting on state visualization as well. I could talk about that later.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">34:14</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, building skills, um, that's very on the nose with, um, efficiency and such. Um, we can get into that in a bit. Um, research spikes with AI. This is one that I found very valuable. One of my first projects with AI as a full stack builder here was I was basically given directions to look at an API and figure out what that, like, meant for us and how we could build something off of that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">34:35</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and that was so much easier with AI. I would have been, um, uh, like frustrated partway through easily a couple of times over with that. Otherwise, um, using AI to assist our understanding of our database, um, where like you'd be amazed how often you could like try to like, I want to understand behavior. Help me figure out like how people are using this. Like you can use AI for that very easily with like all of our current setup.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">34:56</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and then speedrunning dev fundamentals, um, like, uh, one thing that, um, I think is…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">35:02</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I think important to note about philosophical differences that can exist within this space is that, like, we're entering a time, you can ask for it, and then get it. You could say, like, you could tell AI, like, I want to make this real, put this on a website, and it would be like, got it, and then it would do all of the GitHub stuff. Um, you can technically not do that. I think that it's helpful to have a base understanding of the GitHub side of things.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">35:22</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, because we are communicating with people who do that, it's helpful for you to be able to police AI with that, and so, like, I'm not going here to ask everybody to be GitHub masters, I just want to… I think that it will be helpful for us to be able to understand what it is and loosely how it works, um, so I can walk through that as well. I think that's valuable.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">35:39</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">35:40</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay, and then that's my run of things. Now we've all gone. Thank you for sharing, everybody. These are all, um, really interesting points. They all feel very valid, and I feel like we're all coming at this from the perspective of, like, I want to make a difference within this space, and leaning into agency, and then leaning into the new tool side of things.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">35:56</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, we only have 10 minutes left on this. Uh, this is always intended to be, um, if anybody's a D&amp;D fan in here, Session Zero, where we're just trying to figure out, like, what we're doing, where we're going. Um, so that's great. I'm feeling good about there. Um, something that I think might be a helpful note.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">36:13</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, now, in a valuable use of our time, it's just, like, a framing of, like, um, what the… when I'm sharing all of what I'm doing, where I'm coming from in terms of, like, my stack, what I'm working with, um, and then we don't need to run through the whole group now, we can talk about that, um, async or what have you later, because we only have 10 minutes.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">36:31</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, but, uh, basically that way we know, like, well, if I'm using this, you're using that. I'm not sharing this to say, use what I'm using, I'm just sharing this to say that here are the tools that I found valuable. Um, I'm gonna try to not say that too often, because I found myself again in the habit of saying it, but it's… I really think it's important to note is that, like, you'll find that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">36:49</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And of course, every other flavor of that. Okay, so.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">36:55</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Uh, usually, what I work with is, I've been trying to work with the Claude Code desktop app a little bit more. Um, classically, what I did work with more in the past was with, uh, Open Code or with Claude Code. Um, I still use quite a bit of Open Code.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">37:10</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and I will usually use open code for more of, like, I like its plan functionality, but the cloud code plan functionality is still good. Um, and open code, I specifically like using it as my server monitor.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">37:26</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, where, like, example, if I were to, like, tell the story of how, like, I start my day for this, um, it would be that, like, I wake up, I, uh, do all of my life stuff, and when I'm ready to do work stuff, I'll be going to start making my coffee and stuff, and so I will, um, open up Claude Code, and then… I'm sorry, Open Code.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">37:47</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">navigate to UE, and then I would say, like, hey, open code, launch, and then, hey, I'm ready for my server to get set up, because I'm gonna be working within, uh, UE, and then I just type this in, and then I hit return, and then it gets my server up and running for me. Um, and we'll talk about all of this later. This is the speedrun version of everything, and, like, showing what the stack is, but basically, anything that's a local environment thing, I'll usually run an open code.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">38:10</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and then anything that's, like, me asking it to do stuff, um, will largely be Claude code, just out of my habit, where I'm anticipating designers gravitating towards these, like, graphical, um, user interface kind of style setup, whereas Claude code is very, like, command line stuff.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">38:26</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, so, um, that's one, me trying to lean into that, the way my brain works, the way I think other people's brains work on our team, so I think this is a valuable tool. Um, I did use Codex, um, for a little while, and then I bottomed it out, and I recently got my budget re, um, like, brought back up, because I've been on the free plan.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">38:42</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and I didn't, um, ask for the, um, like, credentials for that one to be added to my account. I hit it very hard when they gave it to us. Um, and I have enough of an understanding where I think it's solid, and I think people could get a lot of great use out of it. I know Austin uses it a lot.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">38:58</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I just have been finding that so much of what I do with Claude code is like well and good that I've been sticking with it. One thing that is a note off of that is that like, notably, you'll see that these models are very like Claude, Anthropic centric.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">39:14</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, one thing that's very advantageous about, um, OpenCode is that you can really plug in whatever model you want off of here once you have your Lite LLM plugged in, so that means that, um, OpenCode is a vessel to have these different models flood into.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">39:29</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And then the Claude code is optimized slash specifically hard coded to be the Anthropic models because that's who made it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">39:39</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">That said, moving on, um, I will often use miscellaneous skills that I'll walk through. We have, like, 6 minutes, so I'm not gonna do a deep tour of that, but basically, um, Claude code for the actual, like, code mechanics, then OpenCode for miscellaneous server management, as well as the occasional, like, spike in, like, little side tasks.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">39:59</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, sometimes I'll run that within the terminal in here, which is nice, because, fun fact, Claude Code can see what you're doing when you have this terminal. It can't run commands unless you give it, like, explicit permissions, but, like, when I run the server in here, that means that it can easily see all of the error reports and stuff if I need to have it, like.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">40:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">figure out what's broken that saves the the robot telephone game troubleshooting loop. But sometimes I don't do that, because then it I feel like it's buried within the session, and I just like being able to see it as a window, because feels like I'm is is as close to me like having and holding it as I can.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">40:32</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, other things I like to use that are just kind of, like, supplementary, and then, of course, oh, Figma, obviously, and then the Figma MCP. I highly recommend getting that set up, um, so that you know it can see all of the details between the two spaces, and we're gonna have a more detailed run of this. Again, I'm gonna stop saying that now.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">40:47</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, other tools that I like to use for this, you'll… you've been… might have been noticing that I've been, like, moving things around like this. Um, I use Rectangle, um, that is available, you can just get it through, um, what's that, like, Uru? Like, the, um, the… the, like, the setup app that we have for, like, G2's, like, official sanctioned IT apps, like, I just, like, went to.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">41:07</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, but I like doing that because it lets me organize windows. I've been finding with a lot of AI workflow stuff, I really like having, like, ask for thing, see thing, kind of like layout. Um, and you can do that with, like, you can make it full screen and, like, treat it like its own, like, desktop kind of style space, that works too. Um, but that's just the way that I naturally gravitate for it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">41:27</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and then another thing that I like to do is I use Open Super Whisper. Um, this is a open… it's kind of funny. Um, this is a, um, open source, um, dictation app, um, that lets me have a simple key binding for doing things like dictation, because…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">41:43</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, something I mentioned earlier, I found that the fastest mark-making and the most reliable way for me to express myself in this space is just to make it as intuitive and fast as possible, and that means that I can, like, dictate like that and have it do that, so when I, like, ask for questions or ask for things done, it's more natural for me or faster for me, and I don't do that all the time.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">42:03</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, but it's just helpful for me, especially when I'm, like, I'm, like, interrogating a function or something like that. It helps me, like, ask questions and organize my thoughts better. So, like, that's just to say, do the mark-making that works with your brain.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">42:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">42:18</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And then, oh yeah, I run… you might have noticed that I'm running open code for Ghosty. That's Terminal. It's the same thing, functionally. There's a couple of, like, quality life hockey benefits and graphical differences, like, example… I can't remember if Terminal has this, or if it just codes it, but, like, you can see I'm hitting, like, Command-3.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">42:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">and Command-2, to, like, jump between tabs. It's just, like, a helpful little hockey kind of thing. Um, Ghosty has a couple of quality life things that, um, whenever you see that running, that's what's running there. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">42:48</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">That's a quick high level of the stack. Uh, but like I said, we're gonna have, like, we're gonna have, like, a dedicated sit-down session for setup and workflow and be understanding where you are coming from, too. But it just felt like a helpful thing to include as we're talking about AI, like, building, like, that's, like, a quick run of.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">43:03</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">when I'm building. Um, and then in terms of, I guess, one more note, my last, like, minute, and we have opportunity for questions before we, like, break for our next meeting. Um, but another thing that's noteworthy, um, is that, um.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">43:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">a lot of what your agents are working with will be dictated by where your agents are parked. Uh, and a lot of what that means is that they'll be looking at, one, the codebase that they're plugged into, but then, like, a sub… an important sub-point of that codebase, um, I'm gonna hit Command-Shift.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">43:31</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Period. And you'll see all of these hidden files and folders appear. Um, you could also probably toggle that with like a right click and like another view options, but the hotkeys always easiest for me. Um, and you'll see things like, uh, there's like cursor and codex and Claude within here and there's like open code. Um, there's all these different folders which the, um, agents are knowing to look for that allow them to see things like you can see like here's like I gave myself a PR protocol, like, like folder. This lets my skill.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">44:00</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">This lets my agent understand, like, what's, like, normal for PRs here at G2. Um, those hidden folders and understanding that they exist is very helpful for you in being able to ask agents to have, like, durable things between sessions as well, because, like, to that point of, like.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">44:16</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">you'll see I have multiple sessions. Sometimes I'll even have, like, these… these two sessions were actually dedicated towards a very similar cause, and I was jumping between the two of them and pointing them in different spaces of the same branch, which is a little funny, but at the same time, like, it still let me work faster and have, like, a scrappy little something, um, when I needed it. So… so it works out well there. And so that point is.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">44:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Once you understand how those are… what they're looking at, um, that gives you a better ability to point them to and tell them to, like, build out their own system in a way that, like, works with itself.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">44:45</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, because we only have a little bit of time left, I want to give any space for opportunities for questions about what I just talked about, um, and then we could springboard into the next step after this. I could talk about what we're hoping for next, but I'm going to stop talking for a second.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:01</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">I have one quick question.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:01</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">I'll drop…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:02</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Please.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:04</span>
+                <span class="transcript-speaker">Neil</span>
+                <span class="transcript-text">Yeah, I have to present, actually.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:06</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Good luck, Neil.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:07</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Ah, good luck. See you now.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:08</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">You got this.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:09</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">lag.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:12</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Awesome. Uh, what you got?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:13</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">No, just super quick, because I don't have OpenCloud. We should have it downloaded because I don't have it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:19</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Hmm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:21</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah. Let's hope you get it. Yeah. It's not something you need. It's something that I like. Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:22</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">In my computer. It's something that we need.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:26</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Because…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:28</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Okay, just to… well, no, this is quick in a session, but I don't understand how it works, or what's the benefit.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Right.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:34</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">But do you recommend now that we have it then installed?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:36</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yes. Yes. So I would recommend Find Claude or Codex are the most natural ones that we have, like, that I would think you would like. The other two that you might like are OpenCode. That's the thing that you'd be able to find, like, set up instructions for.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:38</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">45:53</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">It's more of a command line interface. It looks like you're talking to, like, MS-DOS when you're doing it. It's just, like, it's not as intuitive to click and expand things. I expect designers to gravitate towards Codex or Claude faster. Um, and then another option, if neither of those clicked for you.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">46:09</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, I bet you we'd be able to get budget for this. I would… I would help us all talk about this if we wanted to as well, is Cursor. Um, Cursor is a similar tool. The reason that it…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">46:21</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">the lane that it tries to stand out in is that it tries to lean into the design aspect of things, meaning, um, it tries to be a little bit more like, like, visual editor where it can. Um, and what that looks like from a user experience means that, like, you'll have your code prompt just like, I want to do this thing, please, and you'll have, like, a browser view, it's all in the same app.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">46:39</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, what's cool about Cursor is that you can enter a mode that lets you, like, click on a headline, and then, like, change the headline, like, change the text of the headline, or, like, change the space of it. It's like, basically, what if a code editor tried to do what Figma's doing? I underline tried, because there's a lot of complexity within code, and you'll find that it will…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">46:50</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Nice.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">46:57</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, it will get you what you need to see as fast as you can see it, and that means that sometimes it cuts corners. That means that it does get results, so it's really good at prototyping, but it will kind of… it might make, um, sloppy decisions periodically, but it'll make fast decisions. That's good lane.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">47:14</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">So cursor might be for you as well, but I'd recommend those first two. And then a high level in terms of when you would like them. I think that anytime you're touching code, you could use Claude or Codex to touch code for you. So anytime you're like, I need to be an engineer right now would be when you would use either of those tools.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">47:31</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Um, and I think both of them, Claude for sure, I think, I'm pretty sure Codex does, that mode shift between, like, chat and code, um, where most of what we're talking about will exist within the code tab of that, but that said, things like.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">47:48</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">um, asking it to, like, look at, um, like, Confluence connectors, being like, hey, read a PRD for me, um, or help me summarize stuff. That can very well and good be chat. It's just to say that, like, the reason that when it starts to get real full stack is when you're looking at the code side of things. So Claude Code is what I'd recommend. Um, let me know if you need any help setting that up.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:00</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Mm-hmm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:08</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">And we could, uh, one, meet, meet separately, uh, or two, I can just, like, try to, like, make some, make some noise for you, just, like, make sure you can get through the, um, the, um, like, the permissions process of that as well. Um…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:21</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">So, I guess maybe I can communicate with you async afterwards as well.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:23</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">You know.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:26</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah, we do have the cloud code, but the Codex thing is the thing, the one that we need to, yeah, make sure we have it ready. I think, yeah, we both have the app, but we need to like, yeah, connect everything and like make sure the setup is all right. So yeah, maybe come.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:27</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:31</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:39</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Hmm.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:39</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Got it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:41</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Have a meeting for this or save it for the next one.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:43</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yes. Yeah, that's, um, the more setup that gets involved… also, I realize that we're going over, thank you for going over. Um, the more setup that's involved, the more I'm very, very happy with us putting this as, like, a Thursday meeting thing. If it's just like a, like, let's just get it up and running and make sure you have it.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:44</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">48:59</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">so that we can meet, that's also a thing we could do. Um, I guess that's just to say, give it a go, and then if it starts to give you too much trouble, this is literally the space for us to talk about that, um, so we can do that. Um, and then that's good for me to know, too, Codex, it's kind of funny, like, I was, basically, I'm, like, more or less been given Claude, and then I don't have Codex. You.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:19</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Uh, but don't have Claude. Um, so that's, that's fine for us working together. Um, and honestly, I'm just gonna go and get Codex. It's probably the way to do things. So I'll, I'll be picking that up again, um, in a little bit, uh, because it sounds like that'.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:29</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:33</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Cool. One last stupid question, maybe. What does UE stand for?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Cool.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:34</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Perfect.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:35</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yep.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:37</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Ah, that's a great question. So UE's…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:39</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">I don't know either.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:41</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">A lot of letters.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:42</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yeah, no, so it's, um, it's because…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:44</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I'm going to, so one, I don't think it makes a lot of sense, but it stands for user experience, which is cheeky. I know, right? It's like, well, I thought we had a different acronym for that. No, it stands for user experience. I had to look that up. Nobody says that. Nobody thinks about it when they do it. It just happens to be the repo that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:50</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Ooh.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">49:52</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:01</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">I think it's to reflect the fact that it's where, um… it's supposed to say this is, uh… it's almost like a main branch concept. It's like, this is what people see when they come to G2. But yeah, I think it's nonsensical as a name. I don't know if I should take that with Mike Wheeler or not, but that'.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:02</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:11</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:13</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:16</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Nice. We had the X, but it's good to know.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:17</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Good to know.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:18</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Yep.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:19</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Yeah, yeah, why it's not UX?</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:21</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Mm-hmm. I know. Hurrah. Oh, well. Yeah, we're not going to change it now, I don't think. But yeah, here we are. Yeah, cool. Any last questions here or later? Cool.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:22</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">For…</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:25</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Not enough.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:25</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Yeah. Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:27</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">Makes sense.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:32</span>
+                <span class="transcript-speaker">Joana Balagué Casadó</span>
+                <span class="transcript-text">Now we can go to the showcase.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:33</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">All good, yeah.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:33</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:35</span>
+                <span class="transcript-speaker">Martin Leturia</span>
+                <span class="transcript-text">We're given that.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:35</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Okay, yeah. Well, I'm feeling invigorated. Thanks for the great first session. Looking forward to learning more together.</span>
+              </div>
+              <div class="transcript-line">
+                <span class="transcript-time">50:42</span>
+                <span class="transcript-speaker">05-06 - Prairie Shores</span>
+                <span class="transcript-text">Good for us.</span>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="elv-mt-4 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+      <a href="../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
+    </footer>
+
+  </div>
+
+</div>
+
+<!-- Accordion behavior -->
+<script>
+(function() {
+  const accordions = document.querySelectorAll('[data-accordion]');
+  accordions.forEach(accordion => {
+    const headers = accordion.querySelectorAll('.elv-accordion__header');
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        const contentId = header.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
