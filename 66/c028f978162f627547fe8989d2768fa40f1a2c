@@ -1,0 +1,21 @@
+epics/agent-workspace-setup/explorations/01-agent-workspace-setup.html
+  s_f43ab0660574a0::t_ae375067b2b2d4 236,242,248,254
+  s_f43ab0660574a0::t_6a310d3350d8e6 1-55,62-235,237-241,243-247,249-253,255-530
+  s_f43ab0660574a0::t_a33a76fba8a503 56-61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "66c028f978162f627547fe8989d2768fa40f1a2c",
+  "prompts": {},
+  "sessions": {
+    "s_f43ab0660574a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "accf4419-00bd-450e-8f36-c24102d8deb9",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Sam Childs <schilds@g2.com>"
+    }
+  }
+}
