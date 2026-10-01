@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Environment Setup</title>
+
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/tokens/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/components/elevate.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/utilities.css">
+  <link rel="stylesheet" href="../../../shared/elevate-prototyping-kit/icons/icons.css">
+
+  <style>
+    body { margin: 0; background: var(--bg-neutral-5); }
+    html { scroll-behavior: smooth; }
+
+    code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    pre.codeblock {
+      background: #17151d;
+      color: #e7e4f0;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.6;
+      margin: 0;
+    }
+    pre.codeblock .c { color: #8b8698; }
+
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+      background: var(--bg-neutral-10, #f2f2f3);
+      color: var(--text-default);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .flow-step {
+      flex: 1 1 140px;
+      background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      min-width: 140px;
+    }
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-nonessential, #6f6d78);
+      font-size: 20px;
+      flex: 0 0 auto;
+      padding: 0 2px;
+    }
+    @media (max-width: 720px) {
+      .flow-row { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    }
+
+    .step-row {
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .step-row:last-child { border-bottom: none; }
+    .step-num {
+      flex: 0 0 32px;
+      height: 32px;
+      width: 32px;
+      border-radius: var(--radius-full);
+      background: #f2f0f9;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    table.symptom-table { width: 100%; border-collapse: collapse; }
+    table.symptom-table th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      background: #fafafa;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    table.symptom-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      color: var(--text-default);
+      vertical-align: top;
+    }
+    table.symptom-table tr:last-child td { border-bottom: none; }
+
+    .elv-accordion__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-default);
+      text-align: left;
+    }
+    .elv-accordion__item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .elv-accordion__item:last-child { border-bottom: none; }
+    .elv-accordion__content[aria-hidden="true"] { display: none; }
+    .elv-accordion__content[aria-hidden="false"] { display: block; }
+    .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
+    .elv-accordion__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 150ms ease;
+    }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    /* Tout banner — compact inline callout with icon + text + CTA */
+    .tout-banner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ebe9f6;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+    }
+    .tout-banner__icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #ffffff;
+      color: #5746b2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tout-banner__text {
+      flex: 1 1 auto;
+      margin: 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #342a6a;
+      min-width: 200px;
+    }
+    .tout-banner__cta {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      .tout-banner { flex-wrap: wrap; }
+    }
+
+    .review-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 750px) {
+      .review-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div elv class="elv-bg-neutral-5 elv-min-h-screen">
+
+  <!-- Header -->
+  <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
+    <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
+      <nav aria-label="Breadcrumb" class="elv-mb-3">
+        <ol class="elv-breadcrumbs" role="list" style="display:inline-flex; align-items:center; gap:2px;">
+          <li style="display:flex; align-items:center; gap:2px;">
+            <a href="../../../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">FSB Design Group 2</a>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
+          </li>
+          <li>
+            <span style="color:#84838a; font-size:12px;" aria-current="page">Local Environment Setup</span>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
+        Local Environment Setup
+      </h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">
+        Getting UE running on your own machine — the clone-to-dev-server sequence, what tends to break along
+        the way and why, and the tools worth knowing about before you fight the terminal alone.
+      </p>
+    </div>
+  </header>
+
+  <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3" style="display:flex; flex-direction:column; gap:96px;">
+
+    <!-- SECTION 1: THE SETUP SEQUENCE -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">The setup sequence</h2>
+      <p class="elv-text-sm elv-text-subtle elv-max-w-2xl" style="margin-bottom:32px;">
+        Five steps, run once in order: clone the repo, install two separate dependency sets (Ruby and JS),
+        set up the database, then start the dev server.
+      </p>
+
+      <div class="flow-row" style="margin-bottom:32px;">
+        <div class="flow-step" style="background:#f2f0f9; border-color:#ddd7f3;">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">1. Clone</div>
+          <div class="elv-text-sm elv-text-subtle">Pull the repo down locally for the first time.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">2. bundle install</div>
+          <div class="elv-text-sm elv-text-subtle">Installs the Ruby/Rails dependencies the app needs to run.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">3. yarn install</div>
+          <div class="elv-text-sm elv-text-subtle">Installs the JS/frontend dependencies — a separate package tree from step 2.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">4. db:setup</div>
+          <div class="elv-text-sm elv-text-subtle">Creates and seeds the local database. Needs Docker running first.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step" style="background:#f2f0f9; border-color:#ddd7f3;">
+          <div class="elv-text-base elv-font-bold elv-mb-1" style="color:#5746b2;">5. yarn run dev</div>
+          <div class="elv-text-sm elv-text-subtle">Starts the dev server. Site lives at <span class="term-chip" style="background:#ffffff;">g2.test</span>.</div>
+        </div>
+      </div>
+
+      <pre class="codeblock"><span class="c"># from the g2-setup skill</span>
+git clone git@github.com:g2crowd/ue.git &amp;&amp; cd ue
+bundle install
+yarn install
+bin/rails db:setup      <span class="c"># needs Docker running</span>
+yarn run dev</pre>
+
+      <div class="tout-banner" style="margin-top:32px;">
+        <div class="tout-banner__icon">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.1 7.9L18 10L12.1 12.1L10 18L7.9 12.1L2 10L7.9 7.9L10 2Z" fill="currentColor"/></svg>
+        </div>
+        <p class="tout-banner__text">
+          Once <span class="term-chip" style="background:#ffffff;">yarn run dev</span> is running, the site lives at
+          <strong>https://www.g2.test</strong> — not localhost.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: IT'S A SEQUENCE, NOT A COMMAND -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">It's a sequence, not a command</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        <span class="term-chip">yarn run dev</span> looks like one command, but it's actually kicking off a chain —
+        and a break anywhere in that chain can look like a totally unrelated failure on screen.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 8px 24px 8px;">
+
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Colima starts</div>
+              <div class="elv-text-sm elv-text-subtle">The lightweight VM that runs Docker on your Mac. Nothing containerized can start until this is up.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Docker containers come up</div>
+              <div class="elv-text-sm elv-text-subtle">Postgres and any other service containers the app depends on.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">DB ports bind</div>
+              <div class="elv-text-sm elv-text-subtle">The app connects to Postgres over the expected local port.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">4</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">puma-dev starts</div>
+              <div class="elv-text-sm elv-text-subtle">Routes <span class="term-chip">g2.test</span> requests to the app server running Puma.</div>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">5</div>
+            <div>
+              <div class="elv-text-base elv-font-semibold elv-text-default">Four watchers start in parallel</div>
+              <div class="elv-text-sm elv-text-subtle">Background processes that recompile Sass, rebuild JS, and rebuild the Elevate design-system bundle as you edit — each one is a separate thing that can silently die.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: WHEN IT BREAKS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">When it breaks</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Because it's a chain, the symptom you see rarely names the actual cause. These four cover most of what
+        goes wrong day to day.
+      </p>
+
+      <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+        <div class="elv-content-card__body" style="padding: 0;">
+          <table class="symptom-table">
+            <tr>
+              <th style="width:26%;">Symptom</th>
+              <th style="width:32%;">Cause</th>
+              <th>Fix</th>
+            </tr>
+            <tr>
+              <td>Styles broken</td>
+              <td>Sass watcher died</td>
+              <td><span class="term-chip">yarn run sass:watch &amp;</span></td>
+            </tr>
+            <tr>
+              <td>500s everywhere</td>
+              <td>Postgres down / migration pending</td>
+              <td><span class="term-chip">bin/rails db:migrate</span></td>
+            </tr>
+            <tr>
+              <td>curl returns 000</td>
+              <td>1 puma thread, monopolized</td>
+              <td>Kill workers, restart puma-dev</td>
+            </tr>
+            <tr>
+              <td>Broken after branch switch</td>
+              <td>Stale Elevate build</td>
+              <td><span class="term-chip">yarn run elevate:build</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: WORTH KNOWING ABOUT -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Worth knowing about</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Two things that make the sections above mostly theoretical once you have them.
+      </p>
+
+      <div class="review-grid">
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__header">
+            <div class="elv-content-card__header-content">
+              <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:8px 0 3px;">The g2-server skill</h3>
+              <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); text-transform:uppercase; letter-spacing:0.03em; margin:0;">Packaged troubleshooting</p>
+            </div>
+          </div>
+          <div class="elv-content-card__body">
+            <p class="elv-text-sm elv-text-subtle" style="margin:0;">
+              Everything in "It's a sequence, not a command" and "When it breaks" above — packaged into one
+              skill you can ask your agent to run instead of working through it by hand.
+            </p>
+          </div>
+        </div>
+        <div class="elv-content-card elv-content-card--bordered" style="max-width:none;">
+          <div class="elv-content-card__header">
+            <div class="elv-content-card__header-content">
+              <h3 class="elv-content-card__title" style="font-size:17px; font-weight:700; color:var(--text-default); margin:8px 0 3px;">The Elevate Lookbook</h3>
+              <p class="elv-content-card__subtitle" style="font-size:12.5px; font-weight:500; color:var(--text-nonessential,#6f6d78); text-transform:uppercase; letter-spacing:0.03em; margin:0;">Before writing custom styles</p>
+            </div>
+          </div>
+          <div class="elv-content-card__body">
+            <p class="elv-text-sm elv-text-subtle" style="margin:0 0 8px;">
+              A live, browsable catalog of every component in G2's design system, running locally.
+            </p>
+            <span class="term-chip">https://www.g2.test/elevate/lookbook</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: TERMS -->
+    <section>
+      <h2 class="elv-text-2xl elv-font-bold elv-text-default elv-mb-2">Terms worth knowing</h2>
+      <p class="elv-text-sm elv-text-subtle elv-mb-5 elv-max-w-2xl">
+        Words you'll see in error messages and setup docs before they mean anything.
+      </p>
+
+      <div class="elv-accordion" data-accordion>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="true" aria-controls="t-docker">
+            <span><span class="term-chip">Docker container</span> &nbsp; An isolated, disposable mini-computer</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-docker" aria-hidden="false" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Runs a piece of infrastructure (like Postgres) in an isolated environment, identical on every
+                machine. You don't install Postgres yourself — you run its container.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like a component in a design system — pre-built, self-contained, the same everywhere it's used.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-colima">
+            <span><span class="term-chip">Colima</span> &nbsp; What runs Docker on a Mac</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-colima" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Docker itself is built for Linux, so on a Mac, Colima runs a small Linux VM in the background to
+                host it. If Colima isn't running, no container can start — it's the very first link in the chain.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-puma">
+            <span><span class="term-chip">Puma / puma-dev</span> &nbsp; What actually serves the app</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-puma" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                Puma is the Ruby app server that runs the Rails app. <span class="term-chip">puma-dev</span> is a
+                thin layer on top that routes a friendly local domain (<span class="term-chip">g2.test</span>) to
+                whichever Puma instance is running — it's why the site loads at a real-looking URL instead of
+                <span class="term-chip">localhost:3000</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-watcher">
+            <span><span class="term-chip">Watcher process</span> &nbsp; Recompiles code as you edit</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-watcher" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                A background process that watches a folder for file changes and rebuilds output automatically —
+                Sass into CSS, or the Elevate design-system bundle. It runs the whole time you're developing, and
+                because it runs silently, a dead watcher is easy to mistake for a code bug.
+                <div class="elv-mt-2 elv-text-xs" style="color:#5746b2;">In design terms: like Figma auto-saving as you work — except here, if it silently stops, nothing tells you.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-migration">
+            <span><span class="term-chip">Migration</span> &nbsp; A versioned change to the database shape</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-migration" aria-hidden="true" role="region">
+            <div class="elv-accordion__body elv-text-sm" style="padding: 0 0 16px;">
+              Every change to the database structure (a new column, a new table) is written as a migration file
+              and applied in order. If your local database is missing one — usually after pulling a teammate's
+              branch — you'll see errors until you run <span class="term-chip">bin/rails db:migrate</span>.
+            </div>
+          </div>
+        </div>
+
+        <div class="elv-accordion__item">
+          <button class="elv-accordion__header" aria-expanded="false" aria-controls="t-bundleyarn">
+            <span><span class="term-chip">bundle install vs yarn install</span> &nbsp; Two separate dependency trees</span>
+            <svg class="elv-accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="elv-accordion__content" id="t-bundleyarn" aria-hidden="true" role="region">
+            <div class="elv-accordion__content-inner">
+              <div class="elv-accordion__body elv-text-sm">
+                <span class="term-chip">bundle install</span> installs Ruby gems (the backend); <span class="term-chip">yarn install</span>
+                installs JS packages (the frontend). They're tracked and installed completely independently —
+                pulling a branch that adds a new gem won't do anything to your JS packages, and vice versa. If
+                something's missing after pulling, it's worth running both.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="elv-mt-4 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
+      <a href="../../../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
+    </footer>
+
+  </div>
+
+</div>
+
+<!-- Accordion behavior -->
+<script>
+(function() {
+  const accordions = document.querySelectorAll('[data-accordion]');
+  accordions.forEach(accordion => {
+    const headers = accordion.querySelectorAll('.elv-accordion__header');
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        const contentId = header.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        header.setAttribute('aria-expanded', !isExpanded);
+        content.setAttribute('aria-hidden', isExpanded);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
