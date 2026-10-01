@@ -14,74 +14,34 @@
     body { margin: 0; background: var(--bg-neutral-5); }
 
     .elv-accordion__header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      width: 100%;
-      padding: 14px 0;
-      border: none;
-      background: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-default);
-      text-align: left;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      width: 100%; padding: 14px 0; border: none; background: none; cursor: pointer;
+      font-size: 14px; font-weight: 600; color: var(--text-default); text-align: left;
     }
     .elv-accordion__content[aria-hidden="true"] { display: none; }
     .elv-accordion__content[aria-hidden="false"] { display: block; }
     .elv-accordion__body { padding: 0 0 16px; color: var(--text-subtle); }
-    .elv-accordion__icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      transition: transform 150ms ease;
-    }
-    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon {
-      transform: rotate(180deg);
-    }
+    .elv-accordion__icon { width: 20px; height: 20px; flex-shrink: 0; transition: transform 150ms ease; }
+    .elv-accordion__header[aria-expanded="true"] .elv-accordion__icon { transform: rotate(180deg); }
 
     .transcript-scroll {
-      max-height: 520px;
-      overflow-y: auto;
-      background: var(--bg-neutral-0);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-md);
-      padding: 16px 18px;
+      max-height: 520px; overflow-y: auto; background: var(--bg-neutral-0);
+      border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px 18px;
     }
-    .transcript-line {
-      display: flex;
-      gap: 10px;
-      padding: 5px 0;
-      font-size: 13px;
-      line-height: 1.5;
-    }
+    .transcript-line { display: flex; gap: 10px; padding: 5px 0; font-size: 13px; line-height: 1.5; }
     .transcript-time {
-      flex: 0 0 48px;
-      color: var(--text-nonessential, #9b9aa1);
-      font-variant-numeric: tabular-nums;
-      font-size: 12px;
-      padding-top: 1px;
+      flex: 0 0 48px; color: var(--text-nonessential, #9b9aa1);
+      font-variant-numeric: tabular-nums; font-size: 12px; padding-top: 1px;
     }
-    .transcript-speaker {
-      flex: 0 0 170px;
-      font-weight: 600;
-      color: var(--text-default);
-    }
-    .transcript-text {
-      flex: 1 1 auto;
-      color: var(--text-subtle);
-    }
-    @media (max-width: 640px) {
-      .transcript-speaker { flex: 0 0 110px; }
-    }
+    .transcript-speaker { flex: 0 0 170px; font-weight: 600; color: var(--text-default); }
+    .transcript-text { flex: 1 1 auto; color: var(--text-subtle); }
+    @media (max-width: 640px) { .transcript-speaker { flex: 0 0 110px; } }
   </style>
 </head>
 <body>
 
 <div elv class="elv-bg-neutral-5 elv-min-h-screen">
 
-  <!-- Header -->
   <header class="elv-bg-neutral-0 elv-border-b elv-border-light" style="border-bottom-width: 0.5px;">
     <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-pt-12 elv-pb-8 elv-px-3">
       <nav aria-label="Breadcrumb" class="elv-mb-3">
@@ -90,22 +50,14 @@
             <a href="../index.html" style="color:#4c4b53; text-decoration:none; font-size:12px;">FSB Design Group 2</a>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="fill:#6f6d78;"><path d="M10.875 10L6.9375 6.0625L8 5L13 10L8 15L6.9375 13.9375L10.875 10Z"/></svg>
           </li>
-          <li>
-            <span style="color:#84838a; font-size:12px;" aria-current="page">Meetings</span>
-          </li>
+          <li><span style="color:#84838a; font-size:12px;" aria-current="page">Meetings</span></li>
         </ol>
       </nav>
       <div class="elv-inline-flex elv-items-center elv-gap-2 elv-px-3 elv-py-1 elv-rounded-full elv-mb-3" style="background: #eef2ff;">
-        <span class="elv-text-xs elv-font-bold elv-uppercase elv-tracking-wide" style="color: #4F46E5;">
-          Weekly Sync
-        </span>
+        <span class="elv-text-xs elv-font-bold elv-uppercase elv-tracking-wide" style="color: #4F46E5;">Weekly Sync</span>
       </div>
-      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">
-        FSB Design Group 2 (Weekly)
-      </h1>
-      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">
-        Thursday, October 1, 2026 · 1:14–2:05 PM UTC · Sam Childs, Joana Balagué Casadó, Martin Leturia, Neil
-      </p>
+      <h1 class="elv-text-4xl elv-font-extrabold elv-text-default elv-mb-3 elv-leading-tight">FSB Design Group 2 (Weekly)</h1>
+      <p class="elv-text-base elv-text-subtle elv-max-w-2xl elv-leading-relaxed">Thursday, October 1, 2026 · 1:14–2:05 PM UTC · Sam Childs, Joana Balagué Casadó, Martin Leturia, Neil</p>
       <p class="elv-text-xs elv-text-nonessential elv-mt-3">
         <a href="https://docs.zoom.us/doc/hqGf5S98SxSJoHw4b8iO2w" target="_blank" rel="noopener" class="elv-text-nonessential hover:elv-text-primary">Source: Zoom Docs (AI Companion) →</a>
       </p>
@@ -114,13 +66,11 @@
 
   <div class="elv-max-w-7xl elv-w-full md:elv-w-5/6 elv-mx-auto elv-py-12 elv-px-3" style="display:flex; flex-direction:column; gap:64px; max-width: 820px;">
 
-    <!-- Quick recap -->
     <section>
       <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:12px;">Quick recap</h2>
       <p class="elv-text-sm elv-text-subtle elv-leading-relaxed" style="margin:0;">This was the first meeting of a new AI-powered product building group led by Sam (05-06), where team members discussed their goals and learning priorities for working with AI tools like Claude Code and Codex. The group, which includes Joana, Martin, and Neil, shared their key objectives including shipping their first code changes, leveraging AI for design system execution, improving QA processes, and understanding when to use different LLM models effectively. Sam explained his workflow using Claude Code for code mechanics and OpenCode for server management, while emphasizing the importance of understanding GitHub processes and the value of Figma in an AI-driven workflow. The team discussed technical setup needs, with Joana and Martin needing to install Codex, and Sam offered to help with the setup process. The conversation ended with an agreement to continue these discussions in future Thursday sessions, focusing on practical implementation and troubleshooting.</p>
     </section>
 
-    <!-- Next steps -->
     <section>
       <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:20px;">Next steps</h2>
         <div style="margin-bottom:20px;">
@@ -153,7 +103,6 @@
         </div>
     </section>
 
-    <!-- Summary -->
     <section>
       <h2 class="elv-text-2xl elv-font-bold elv-text-default" style="margin-bottom:20px;">Summary</h2>
         <div style="margin-bottom:24px;">
@@ -182,7 +131,6 @@
         </div>
     </section>
 
-    <!-- Transcript (click-through) -->
     <section>
       <div class="elv-accordion" data-accordion>
         <div class="elv-accordion__item">
@@ -2030,7 +1978,6 @@
       </div>
     </section>
 
-    <!-- Footer -->
     <footer class="elv-mt-4 elv-pt-6 elv-text-xs elv-text-nonessential elv-border-t elv-border-light" style="border-top-width: 0.5px;">
       <a href="../index.html" class="elv-text-nonessential hover:elv-text-primary">← Back to FSB Design Group 2</a>
     </footer>
@@ -2039,17 +1986,13 @@
 
 </div>
 
-<!-- Accordion behavior -->
 <script>
 (function() {
-  const accordions = document.querySelectorAll('[data-accordion]');
-  accordions.forEach(accordion => {
-    const headers = accordion.querySelectorAll('.elv-accordion__header');
-    headers.forEach(header => {
+  document.querySelectorAll('[data-accordion]').forEach(accordion => {
+    accordion.querySelectorAll('.elv-accordion__header').forEach(header => {
       header.addEventListener('click', () => {
         const isExpanded = header.getAttribute('aria-expanded') === 'true';
-        const contentId = header.getAttribute('aria-controls');
-        const content = document.getElementById(contentId);
+        const content = document.getElementById(header.getAttribute('aria-controls'));
         header.setAttribute('aria-expanded', !isExpanded);
         content.setAttribute('aria-hidden', isExpanded);
       });

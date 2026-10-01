@@ -1,0 +1,76 @@
+---
+description: Pull a weekly FSB Design Group 2 meeting from Zoom (notes + transcript) and add it to the Meetings section
+---
+
+You are helping the user turn a recorded Zoom meeting into a dated page in this repo's Meetings section — pulled directly from Zoom via API, with no shared link or manual copy-paste needed.
+
+## Step 0: Find Repository Root
+
+```bash
+REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+```
+
+If this fails, tell the user to run this from within the explorations repo. All paths below are relative to `{repo-root}`.
+
+## Step 1: Find the meeting via the Zoom connector
+
+This environment has a Zoom MCP connector whose tools read Zoom Docs/Canvas, meetings, and transcripts (tool names are prefixed with a server id that can vary by environment, e.g. `mcp__<id>__search`, `mcp__<id>__get_meeting_assets`, `mcp__<id>__hub_get_file_content`). If these aren't already loaded, use ToolSearch with keywords like "zoom search meeting" / "get meeting assets" and match on the tool *description* (mentions Zoom, Canvas, meetings, transcripts) rather than assuming a fixed id.
+
+- Default target topic: **"FSB Design Group 2 (Weekly)"**. If the user doesn't name a date, assume "the most recent instance."
+- Call the connector's `search` tool against the `zoom_meeting` datasource with `query` set to the topic (or close to it), and a reasonable page size (5–10).
+- From the matching record, note: `meeting_uuid`, `meeting_start_time`, `meeting_end_time`, `attendee_list` (display names), `has_summary`, `has_transcript`.
+- If `has_summary` or `has_transcript` is false, the meeting hasn't finished processing — tell the user and stop rather than generating a page from a partial doc.
+- If more than one plausible match comes back, list them (topic + date + attendees) and ask the user which one.
+
+## Step 2: Pull the meeting assets
+
+Call the connector's `get_meeting_assets` tool with `meetingId` set to the `meeting_uuid` from Step 1.
+
+This response is large (it includes the full verbatim transcript) and will likely exceed the inline tool-output limit — when that happens the runtime saves it to a local file automatically and tells you the path. Use that saved file path directly in Step 3. Don't try to paste the JSON inline or read the whole thing into context — if you need to sanity-check it, use `jq`/Python on the saved file for targeted lookups, the same way you would for any oversized tool result.
+
+## Step 3: Generate the page
+
+Run:
+
+```bash
+python3 scripts/build_meeting_page.py \
+  --assets-json <saved JSON path from Step 2> \
+  --attendees "<comma-separated attendee display names from Step 1>" \
+  --start "<meeting_start_time from Step 1>" \
+  --end "<meeting_end_time from Step 1>" \
+  --hook "<your own short one-line description, written after reading the quick recap — don't just truncate the recap verbatim>"
+```
+
+This writes `meetings/<date>-<topic-slug>.html` and prints a ready-to-paste `<a>` row block (plus parsed next-steps groups, summary headings, and transcript line count) to stdout.
+
+### This script is the style/structure source of truth — not the generated pages
+
+Do not hand-edit a generated page's structure, and don't hand-write a new page from scratch by copying an old one. If the user wants the look changed — a different row layout, a different transcript treatment, a different header, anything — make that change in `scripts/build_meeting_page.py` (the `PAGE_TEMPLATE` / `ROW_TEMPLATE` strings and the small render functions), then regenerate. That's what keeps every future meeting page consistent with the latest intentional decision instead of drifting one hand-edit at a time, and it means a style change this week automatically applies to next week's run without anyone having to remember to repeat it.
+
+After changing the script, add one line to the **Changelog** section of `meetings/README.md` describing what changed and why — the script is the implementation, the README is the human-readable record of *why* it looks the way it does, for whoever (human or agent) reads it later without diffing the script's git history.
+
+## Step 4: Wire it into index.html
+
+- Read `{repo-root}/index.html`.
+- Find `id="meetingCount"` and bump the number.
+- Insert the printed `<a>` row block as the first child inside `<div ... id="meetingGrid">` (newest first).
+- This part stays a small hand-edit each time — don't try to template the whole `index.html`.
+
+## Step 5: Verify in the browser
+
+Per this repo's own conventions, verify UI changes before calling the task done:
+
+1. Start the `static-preview` launch config from `.claude/launch.json` (do not use `file://` — relative CSS/asset links won't resolve in this app's preview pane for local files; serve it).
+2. Open the new meeting page and confirm the notes (recap / next steps / summary) match the source content, and that the "Full transcript" accordion starts collapsed and expands on click.
+3. Open `index.html` at desktop width and confirm the new row renders as a single line (narrow/mobile widths will wrap — that's expected and matches the existing epic/research row patterns, not a bug).
+4. Stop the preview server.
+
+## Step 6: Report — don't commit on your own
+
+Summarize what was created: file path, attendee list, next-steps group count, transcript line count, and the row added to `index.html`. Per this repo's working agreement, don't commit without being asked, even though this is a repeatable/automatable flow — ask, the same as for any other change.
+
+## Edge cases
+
+- **No new meeting yet this week**: tell the user rather than generating from stale or partial data.
+- **A different recurring meeting**: this flow isn't specific to "FSB Design Group 2 (Weekly)" — search by whatever topic the user names instead.
+- **Multiple recurring series logged over time**: if this repo starts tracking more than one series, reconsider whether rows need a tag chip to distinguish them (see `meetings/README.md` Conventions) — that's a styling decision, so it belongs in `scripts/build_meeting_page.py`, not a one-off edit to `index.html`.
